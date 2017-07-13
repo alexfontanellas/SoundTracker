@@ -1,3 +1,4 @@
+/*jshint esversion : 6 */
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -11,8 +12,8 @@ const expressLayouts = require('express-ejs-layouts');
 
 mongoose.connect('mongodb://localhost:27017/sound-tracker');
 
-const index = require('./routes/index');
 const users = require('./routes/users');
+const spotifyCalls = require('./routes/spotifyCalls');
 
 const app = express();
 
@@ -34,8 +35,10 @@ app.set('layout', 'layouts/shared');
 //bower components
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
-app.use('/', index);
 app.use('/users', users);
+app.use('/', spotifyCalls);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
