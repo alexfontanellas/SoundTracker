@@ -1,0 +1,20 @@
+{
+  "name": "soundtracker",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Mi6u3l <miguelbragagomes@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Mi6u3l/SoundTracker",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

@@ -17,6 +17,8 @@ const users = require('./routes/users');
 const app = express();
 
 // view engine setup
+//use express layouts
+app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -27,6 +29,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//set main layout
+app.set('layout', 'layouts/shared');
+//bower components
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 app.use('/', index);
 app.use('/users', users);
