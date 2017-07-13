@@ -25,11 +25,6 @@ spotifyApi.clientCredentialsGrant()
   });
 
 
-  // ROUTER CALLS
-  router.get("/",(req,res,next) => {
-    res.render("index", { title: "Spotify"});
-  });
-
   router.get("/mysong",(req,res,next) => {
     spotifyApi.searchTracks('Love')
       .then(function(data) {

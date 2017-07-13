@@ -13,6 +13,7 @@ const expressLayouts = require('express-ejs-layouts');
 mongoose.connect('mongodb://localhost:27017/sound-tracker');
 
 const users = require('./routes/users');
+const general = require('./routes/general');
 const spotifyCalls = require('./routes/spotifyCalls');
 //ss
 const app = express();
@@ -36,6 +37,7 @@ app.set('layout', 'layouts/shared');
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 app.use('/users', users);
+app.use('/', general);
 app.use('/', spotifyCalls);
 
 
