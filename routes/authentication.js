@@ -11,7 +11,7 @@ const bcrypt     = require("bcrypt");
 const bcryptSalt = 10;
 
 authRoutes.get("/signup", (req, res, next) => {
-  res.render("authentication/signup", { layout: "layouts/authentication" });
+  res.render("authentication/signup");
 });
 
 authRoutes.post("/signup", (req, res, next) => {
@@ -19,13 +19,13 @@ authRoutes.post("/signup", (req, res, next) => {
   const password = req.body.password;
 
   if (username === "" || password === "") {
-    res.render("authentication/signup", { message: "Indicate username and password" , layout: "layouts/authentication"});
+    res.render("authentication/signup", { message: "Indicate username and password" });
     return;
   }
 
   User.findOne({ username }, "username", (err, user) => {
     if (user !== null) {
-      res.render("authentication/signup", { message: "The username already exists" ,layout: "layouts/authentication"});
+      res.render("authentication/signup", { message: "The username already exists" });
       return;
     }
 
@@ -39,7 +39,7 @@ authRoutes.post("/signup", (req, res, next) => {
 
     newUser.save((err) => {
       if (err) {
-        res.render("authentication/signup", { message: "Something went wrong", layout: "layouts/authentication" });
+        res.render("authentication/signup", { message: "Something went wrong"});
       } else {
         res.redirect("/");
       }
@@ -49,7 +49,7 @@ authRoutes.post("/signup", (req, res, next) => {
 
 
 authRoutes.get("/login", (req, res, next) => {
-  res.render("authentication/login", { layout: "layouts/authentication" });
+  res.render("authentication/login");
 });
 
 authRoutes.post("/login", passport.authenticate("local", {
