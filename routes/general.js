@@ -10,7 +10,10 @@ router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
 
 //Render search results
 router.get("/resultsqueue", ensureLogin.ensureLoggedIn(),(req,res,next) => {
-  res.render("resultsqueue");
+    var musicList = ['https://p.scdn.co/mp3-preview/6ab7825c891d399458e4068940eff436b67ae57b?cid=7c824c4a01474c8fbb1a67de125fffbc',
+  'https://p.scdn.co/mp3-preview/74a0da99e8c1452cf915720f783cacefab7a66df?cid=7c824c4a01474c8fbb1a67de125fffbc',
+  'https://p.scdn.co/mp3-preview/ce8ace0ec425840416be78db07cf50dd331eed4f?cid=7c824c4a01474c8fbb1a67de125fffbc'];
+  res.render("resultsqueue", { musicList } );
 });
 
 //Render favorites
