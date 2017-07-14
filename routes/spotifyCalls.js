@@ -24,16 +24,65 @@ spotifyApi.clientCredentialsGrant()
         console.log('Something went wrong when retrieving an access token', err);
   });
 
-  router.get("/mysong",(req,res,next) => {
+// Function to parse the songs (NOT REPEAT SONGS)
+function parseSongs(myArray){ // It receives an array of objects
+  let returnArray = [];
+  for(var i = 0;i<myArray.length;i++){
+    var push = true;
+    for(var j = 0;j<myArray.length;j++){
+      if(i!== j){
+        if(myArray[i].name === myArray[j].name){
+          if(returnArray.indexOf(myArray[i])!== -1 || returnArray.indexOf(myArray[j])!== -1){
+            push = false;
+          }
+        }
+      }
+    }
+    if(push){
+      returnArray.push(myArray[i]);
+    }
+  }
+  return returnArray;
+}
+
+
+// Retrieve information about the song the user searches
+  router.get("/getSong",(req,res,next) => {
     spotifyApi.searchTracks('Love')
       .then(function(data) {
+        // Array which will have objects with the information needed about the song
         let allSongs = [];
         let result = data.body.tracks.items;
         result.forEach((element)=>{
+          // If we can play the song
           if(element.preview_url){
-            allSongs.push(element.preview_url);
+            // The object with the information needed about the song
+            let myObjectSong = {};
+            // Add all the information to the objects
+            myObjectSong.preview_url = element.preview_url;
+            myObjectSong.id = element.id;
+            myObjectSong.name = element.name;
+
+
+            // information about the artist
+
+            let arrayArtists = [];
+            element.artists.forEach((artist) =>{
+              let objectArtist = {};
+              objectArtist.name = artist.name;
+              objectArtist.id = artist.id;
+              arrayArtists.push(objectArtist);
+            });
+            myObjectSong.artists = arrayArtists;
+            //console.log(myObjectSong);
+
+
+            // Push the object to the array<
+            allSongs.push(myObjectSong);
           }
         });
+        allSongs = parseSongs(allSongs);
+        res.render("resultsqueue", {allSongs});
       }, function(err) {
         console.error(err);
       });
