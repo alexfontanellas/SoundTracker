@@ -11,7 +11,22 @@
   </head>
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Sound Track</a>
+        <div class="header-wrapper">
+        <div class="title">
+          <a class="navbar-brand" href="/">Sound Track</a>
+        </div>
+        <div id="custom-search-input">
+                <div class="search-box input-group col-md-12">
+                    <input id="inputSearch" type="text" class="form-control input-lg" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <buttonn id="btnSearch" class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                </div>
+          </div>
+         <div class="logged-user">Miguel</div>
+        </div>
     </div>
     </nav>
     <%- body -%>
@@ -22,5 +37,5 @@
     </footer>
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/javascripts/player.js"></script>
+    <script type="text/javascript" src="/javascripts/general.js"></script>
 </html>
