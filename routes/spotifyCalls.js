@@ -30,14 +30,22 @@ spotifyApi.clientCredentialsGrant()
     res.render("index", { title: "Spotify"});
   });
 
+
   router.get("/mysong",(req,res,next) => {
     spotifyApi.searchTracks('Love')
       .then(function(data) {
-        console.log('Search by "Love"', data.body);
+        let allSongs = [];
+        let result = data.body.tracks.items;
+        result.forEach((element)=>{
+          if(element.preview_url){
+            allSongs.push(element.preview_url);
+          }
+        });
       }, function(err) {
         console.error(err);
       });
   });
+
 
 
   module.exports = router;
