@@ -5,13 +5,13 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const mongoose     = require("mongoose");
-const session    = require("express-session");
+const mongoose = require("mongoose");
+const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const expressLayouts = require('express-ejs-layouts');
 //passport
-const bcrypt        = require("bcrypt");
-const passport      = require("passport");
+const bcrypt = require("bcrypt");
+const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/user");
 

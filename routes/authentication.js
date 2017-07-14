@@ -1,13 +1,19 @@
-const express    = require("express");
+/* jshint esversion:6 */
+
+const express = require("express");
 const authRoutes = express.Router();
 const passport = require("passport");
 
 
 // User model
-const User       = require("../models/user");
+const User = require("../models/user");
+const Artist = require("../models/artist");
+const Song = require("../models/song");
+const Playlist = require("../models/playlist");
+
 
 // Bcrypt to encrypt passwords
-const bcrypt     = require("bcrypt");
+const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
 authRoutes.get("/signup", (req, res, next) => {
@@ -29,12 +35,16 @@ authRoutes.post("/signup", (req, res, next) => {
       return;
     }
 
-    const salt     = bcrypt.genSaltSync(bcryptSalt);
+    const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
 
     const newUser = User({
       username: username,
-      password: hashPass
+      password: hashPass,
+      history: [],
+      favourites: [],
+      artists: [],
+      playLists: []
     });
 
     newUser.save((err) => {

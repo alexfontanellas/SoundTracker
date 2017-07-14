@@ -48,7 +48,9 @@ function parseSongs(myArray){ // It receives an array of objects
 
 // Retrieve information about the song the user searches
   router.get("/getSong",(req,res,next) => {
-    spotifyApi.searchTracks('Love')
+    let search = req.query.song;
+    console.log(search);
+    spotifyApi.searchTracks(search)
       .then(function(data) {
         // Array which will have objects with the information needed about the song
         let allSongs = [];
@@ -74,19 +76,22 @@ function parseSongs(myArray){ // It receives an array of objects
               arrayArtists.push(objectArtist);
             });
             myObjectSong.artists = arrayArtists;
-            //console.log(myObjectSong);
 
+            // Get an image for the artist
+            let myImage = element.album.images[0].url;
+            myObjectSong.image = myImage;
 
             // Push the object to the array<
             allSongs.push(myObjectSong);
           }
         });
         allSongs = parseSongs(allSongs);
-        res.render("resultsqueue", {allSongs});
+        res.render("searchresults", {allSongs});
       }, function(err) {
         console.error(err);
       });
   });
+
 
 
 
