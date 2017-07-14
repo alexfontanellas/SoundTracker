@@ -11,3 +11,30 @@ body {
 .page {
   padding-top: 35px !important;
 }
+
+.search-box {
+    padding-top: 2px;
+}
+
+
+.header-wrapper {
+  display: inline-flex;
+}
+
+.custom-search-input {
+  display: inline-flex;
+}
+
+.title {
+  display: inline-flex;
+}
+
+.title a {
+  width:133px;
+}
+
+.logged-user {
+    padding-top: 12px;
+    padding-left: 10px;
+}
+
