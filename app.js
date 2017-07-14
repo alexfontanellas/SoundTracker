@@ -9,13 +9,20 @@ const mongoose     = require("mongoose");
 const session    = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const expressLayouts = require('express-ejs-layouts');
+//passport 
+const bcrypt        = require("bcrypt");
+const passport      = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const User = require("./models/user");
+
 
 mongoose.connect('mongodb://localhost:27017/sound-tracker');
 
-const users = require('./routes/users');
 const general = require('./routes/general');
 const spotifyCalls = require('./routes/spotifyCalls');
-//ss
+const authRoutes = require("./routes/authentication");
+
+
 const app = express();
 
 // view engine setup
@@ -23,6 +30,17 @@ app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //set main layout
+
+//passport session
+app.use(session({
+  secret: "passport-sound-track-app",
+  resave: true,
+  saveUninitialized: true
+}));
+
+//passport initialize
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // uncomment after placing your favicon in /public
@@ -36,11 +54,37 @@ app.set('layout', 'layouts/shared');
 //bower components
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
-app.use('/users', users);
+app.use('/', authRoutes);
 app.use('/', general);
 app.use('/', spotifyCalls);
 
+//passport serialization
+passport.serializeUser((user, cb) => {
+  cb(null, user.id);
+});
 
+passport.deserializeUser((id, cb) => {
+  User.findOne({ "_id": id }, (err, user) => {
+    if (err) { return cb(err); }
+    cb(null, user);
+  });
+});
+
+passport.use(new LocalStrategy((username, password, next) => {
+  User.findOne({ username }, (err, user) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return next(null, false, { message: "Incorrect username" });
+    }
+    if (!bcrypt.compareSync(password, user.password)) {
+      return next(null, false, { message: "Incorrect password" });
+    }
+
+    return next(null, user);
+  });
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

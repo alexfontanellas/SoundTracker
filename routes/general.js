@@ -1,23 +1,30 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const ensureLogin = require("connect-ensure-login");
+
 
 //Render main page - history
-router.get("/",(req,res,next) => {
+router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
   res.render("history");
 });
 
+//Render search results
+router.get("/resultsqueue", ensureLogin.ensureLoggedIn(),(req,res,next) => {
+  res.render("resultsqueue");
+});
+
 //Render favorites
-router.get("/favorites",(req,res,next) => {
+router.get("/favorites",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
   res.render("favorites");
 });
 
 //Render playlists
-router.get("/playlists",(req,res,next) => {
+router.get("/playlists",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
   res.render("playlists");
 });
 
 //Followed artists
-router.get("/followed",(req,res,next) => {
+router.get("/followed",  ensureLogin.ensureLoggedIn(), (req,res,next) => {
   res.render("followed");
 });
 
