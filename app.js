@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const expressLayouts = require('express-ejs-layouts');
+const flash = require("connect-flash");
 //passport
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -40,6 +41,7 @@ app.use(session({
 }));
 
 //passport initialize
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -69,7 +71,9 @@ passport.deserializeUser((id, cb) => {
   });
 });
 
-passport.use(new LocalStrategy((username, password, next) => {
+passport.use(new LocalStrategy({
+  passReqToCallback: true
+}, (req, username, password, next) => {
   User.findOne({ username }, (err, user) => {
     if (err) {
       return next(err);

@@ -38,3 +38,14 @@ body {
     padding-left: 10px;
 }
 
+.artist-map {
+  height: 300px;
+  width: 100%
+}
+
+.artists-dialog {
+  width: 80%;
+}
+
+
+

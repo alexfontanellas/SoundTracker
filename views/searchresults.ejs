@@ -2,9 +2,11 @@
     <h2>Results</h2>
     <% allSongs.forEach((song) => { %>
        <form action="/playsingle" method="POST">
-            <input type="text" name="preview" value="<%= song.preview_url %>">
+            <input type="hidden" name="preview" value="<%= song.preview_url %>">
+            <input type="hidden" name="artist" value="<%= song.artists[0].name %>">
+            <input type="hidden" name="songName" value="<%= song.name %>">
+            <div><%= song.artists[0].name %></div>
             <div><%= song.name %></div>
-            <div><%= song.preview_url %></div>
             <div><button type="submit" id="listenSong">Listen</button></div>
         </form>
    <% }) %>

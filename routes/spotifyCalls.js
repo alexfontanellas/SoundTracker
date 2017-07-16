@@ -42,6 +42,7 @@ function parseSongs(myArray){ // It receives an array of objects
       returnArray.push(myArray[i]);
     }
   }
+  console.log(returnArray[0].artists[0]);
   return returnArray;
 }
 
