@@ -12,7 +12,7 @@ router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
 
 //Render search results
 router.get("/searchresults", ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  res.render("searchresults");
+  res.render("searchresults" , {username: req.user.username });
 });
 
 //Render play single music
@@ -49,7 +49,7 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
               }
               console.log(artistInfo.locationLabel);
               console.log(artistInfo.location);
-              res.render("playsingle", { song, artistInfo, artistBio});
+              res.render("playsingle", { song, artistInfo, artistBio, username: req.user.username});
            }
         }));
         
