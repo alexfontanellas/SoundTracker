@@ -4,6 +4,8 @@ const ensureLogin = require("connect-ensure-login");
 const request = require('request');
 const musicGraphClientId = 'db794a979fe10f6b58674dcfc7ec2cfc';
 const openAuraKey = 'ff6b1b41cb78a3020f7e52051d31c189c0e16d62';
+const User = require("../models/user");
+
 
 //Render main page - history
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
@@ -57,20 +59,6 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
       console.log(error);
     }
   }));
-  /*request('http://api.musicgraph.com/api/v2/artist/search?api_key=' + musicGraphClientId + '&name=' + artistName, ((error, response, body) => {
-    if (!error && response.statusCode == 200) {
-        console.log('ok')
-        let result =  JSON.parse(response.body);
-        artistInfo.name = result.data[0].name;
-        artistInfo.country = result.data[0].country_of_origin;
-        artistInfo.genre = result.data[0].main_genre;
-        artistInfo.decade = result.data[0].decade;
-        res.render("playsingle", { song, artistInfo, songName });
-    } else {
-      console.log(error);
-    }
-  }));*/
-
 });
 
 //Render queue
@@ -83,7 +71,20 @@ router.get("/resultsqueue", ensureLogin.ensureLoggedIn(),(req,res,next) => {
 
 //Render favorites
 router.get("/favorites",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
-  res.render("favorites");
+     let username = req.user.username;
+     let favourites = [];
+     User.findOne({username}, (err,user) => {
+     if(err){
+       return next(err);
+     }
+     else{
+       favourites = user.favourites;
+       console.log('favourites', favourites);
+       console.log(user.favourites);
+       res.render("favorites", {username: req.user.username, favourites });
+     }
+   });
+  
 });
 
 //Render playlists
