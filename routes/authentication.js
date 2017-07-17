@@ -59,13 +59,13 @@ authRoutes.post("/signup", (req, res, next) => {
 
 
 authRoutes.get("/login", (req, res, next) => {
-  res.render("authentication/login");
+  res.render("authentication/login", { "message": req.flash("error") });
 });
 
 authRoutes.post("/login", passport.authenticate("local", {
   successRedirect: "/",
   failureRedirect: "/login",
-  failureFlash: false,
+  failureFlash: true,
   passReqToCallback: true
 }));
 
