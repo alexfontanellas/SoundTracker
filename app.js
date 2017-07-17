@@ -17,7 +17,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/user");
 
 
-mongoose.connect('mongodb://localhost:27017/sound-tracker');
+//mongoose.connect('mongodb://localhost:27017/sound-tracker');
+mongoose.connect('mongodb://heroku_svb4b91q:eb23cooh56s9818jpngnl79lp5@ds161032.mlab.com:61032/heroku_svb4b91q');
 
 const general = require('./routes/general');
 const spotifyCalls = require('./routes/spotifyCalls');
