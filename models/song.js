@@ -10,7 +10,12 @@ const songSchema = new Schema({
   image: String,
   id_song: String,
   preview_url: String,
-  artists: [Artist.schema]
+  // If time, create a artist object with all of its info
+  artist_name: String,
+  artist_bio: String,
+  artist_location: String,
+  artist_locationLabel: String
+
 
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

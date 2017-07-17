@@ -17,8 +17,13 @@ router.get("/searchresults", ensureLogin.ensureLoggedIn(), (req,res,next) => {
 
 //Render play single music
 router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  let song = req.body.preview;
-  let songName = req.body.songName;
+  let song = {
+    previewUrl: req.body.preview,
+    name: req.body.songName,
+    id: req.body.songId,
+    image: req.body.songImage
+  }; 
+  
   let artistName = req.body.artist;
   let artistInfo = {};
   request('http://api.openaura.com/v1/search/artists_all?q='+ artistName + '&api_key=ff6b1b41cb78a3020f7e52051d31c189c0e16d62', ((error, response, body) => {
@@ -32,7 +37,9 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
              let result =  JSON.parse(response.body);
               artistInfo.id = artistId;
               artistInfo.name = result.name;
-              artistInfo.bio = result.bio.media[0].data.text;
+              //artistInfo.bio = result.bio.media[0].data.text;
+              let artistBio = result.bio.media[0].data.text;
+              artistBio = artistBio.replace(/[^a-zA-Z ]/g, "");
               if (result.fact_card.media[0].data.birthplace !== '') {
                 artistInfo.locationLabel = 'Birth Place';
                 artistInfo.location = result.fact_card.media[0].data.birthplace;
@@ -42,7 +49,7 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
               }
               console.log(artistInfo.locationLabel);
               console.log(artistInfo.location);
-              res.render("playsingle", { song, artistInfo, songName });
+              res.render("playsingle", { song, artistInfo, artistBio});
            }
         }));
         

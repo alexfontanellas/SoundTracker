@@ -1,10 +1,10 @@
 <div>
-    <audio class="audio" src="<%= song %>" controls="">
+    <audio class="audio" src="<%= song.previewUrl %>" controls="">
             Your browser does not support the audio element.
     </audio>
     <div class="audio-options">
-        <div><%= songName %></div>
-        favorite | add to queue | add to playlist |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a> | etc |
+        <div><%= song.name %></div>
+        <a href="#" onclick="saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')">add to favourites</a> | add to queue | add to playlist |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a> | etc |
     </div>
 </div>
  <div class="artist-modal modal fade" id="<%= artistInfo.id %>" role="dialog" >
@@ -15,7 +15,7 @@
                 </div>
                 <div class="modal-body">    
                     <p>Name: <%=artistInfo.name %></p>
-                    <p>Bio : <%=artistInfo.bio %></p>
+                    <p>Bio : <%=artistBio %></p>
                     <p><%=artistInfo.locationLabel %>: <%=artistInfo.location %></p>
                     <div id="map" class="artist-map"></div>
                 </div>
@@ -31,6 +31,39 @@
     src="https://maps.googleapis.com/maps/api/js?v=3.20&key=AIzaSyDHylimdPIr0Lfc6WzCjS47B7mrNrTQSJ0&callback=initialize">
 </script>
 <script>
+ 
+function saveToFavorite(song, artistInfo, artistBio) {
+    song = JSON.parse(song);
+    artistInfo = JSON.parse(artistInfo);
+    console.log(song);
+    console.log(artistInfo);
+    console.log(artistBio);
+    const info = {
+        songName: song.name,
+        songImage: song.image,
+        songId: song.id,
+        songPreviewUrl: song.previewUrl,
+        artistName: artistInfo.name,
+        artistBio: artistBio,
+        artistLocation: artistInfo.location,
+        artistLocationLabel: artistInfo.locationLabel,
+
+
+    };
+      $.ajax({
+        method:  'POST',
+        url:     '/favourites/new/',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        data: { info: info },
+        success: function(data) {
+            console.log(data);
+        },
+        error:   function(data) {
+            console.log(data);
+        }
+  });   
+}
+
 setTimeout(function(){ $('#<%= artistInfo.id %>').on('shown.bs.modal', function () {
     google.maps.event.trigger(map, "resize");
     map.panTo(marker.getPosition());
