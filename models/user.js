@@ -14,7 +14,8 @@ const userSchema = new Schema({
   history: [Song.schema],
   favourites: [Song.schema],
   artists: [Artist.schema],
-  playLists: [Playlist.schema]
+  playLists: [Playlist.schema],
+  queue: [Song.schema]
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });

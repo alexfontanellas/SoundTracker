@@ -1,19 +1,19 @@
 <div>
-    <audio class="audio" src="<%= song %>" controls="">
+    <audio class="audio" src="<%= song.previewUrl %>" controls="">
             Your browser does not support the audio element.
     </audio>
     <div class="audio-options">
-        <div><%= songName %></div>
-        favorite | add to queue | add to playlist |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a> | etc |
+        <div><%= song.name %></div>
+        <a href="#" onclick="saveToFavorite(<%song %>, <% artistInfo %>)">add to favourites</a> | add to queue | add to playlist |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a> | etc |
     </div>
 </div>
  <div class="artist-modal modal fade" id="<%= artistInfo.id %>" role="dialog" >
             <div class="modal-dialog modal-lg">
-                <div class="modal-content" id="back" >  
+                <div class="modal-content" id="back" >
                     <div class="modal-header">
                     <h4>Artist Details<h4>
                 </div>
-                <div class="modal-body">    
+                <div class="modal-body">
                     <p>Name: <%=artistInfo.name %></p>
                     <p>Bio : <%=artistInfo.bio %></p>
                     <p><%=artistInfo.locationLabel %>: <%=artistInfo.location %></p>
@@ -21,16 +21,44 @@
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-default" data-dismiss="modal">Close</a>
-                </div>      
+                </div>
             </div>
       </div>
 
- <script 
-    async 
-    defer 
+ <script
+    async
+    defer
     src="https://maps.googleapis.com/maps/api/js?v=3.20&key=AIzaSyDHylimdPIr0Lfc6WzCjS47B7mrNrTQSJ0&callback=initialize">
 </script>
 <script>
+function saveToFavorite(song, artistInfo) {
+  console.log("Song: ", song);
+  console.log("ArtistInfo: ", artistInfo);
+    const info = {
+        songName: song.name,
+        songImage: song.image,
+        songId: song.id,
+        songPreviewUrl: song.previewUrl,
+        artistName: artistInfo.name,
+        artistBio: artistInfo.bio,
+        artistLocation: artistInfo.location,
+        artistLocationLabel: artistInfo.locationLabel,
+
+
+    };
+      $.ajax({
+        method:  'POST',
+        url:     '/favourites/new/',
+        data: {info},
+        success: function(data) {
+            console.log(data);
+        },
+        error:   function(data) {
+            console.log(data);
+        }
+  });
+}
+
 setTimeout(function(){ $('#<%= artistInfo.id %>').on('shown.bs.modal', function () {
     google.maps.event.trigger(map, "resize");
     map.panTo(marker.getPosition());
@@ -43,7 +71,7 @@ function initialize() {
     });
     var geocoder = new google.maps.Geocoder();
         geocodeAddress(geocoder, map);
-    
+
     }
 
     function geocodeAddress(geocoder, resultsMap) {
@@ -55,7 +83,7 @@ function initialize() {
             map: resultsMap,
             position: results[0].geometry.location
         });
-        
+
         } else {
         alert('Geocode was not successful for the following reason: ' + status);
         }

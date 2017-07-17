@@ -6,6 +6,9 @@ const Schema  = mongoose.Schema;
 const artistSchema = new Schema({
   name: String,
   id_artist : String,
+  bio: String,
+  location: String
+
 
 
 }, {
