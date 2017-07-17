@@ -8,7 +8,9 @@
     <link rel="stylesheet" type="text/css" href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="/bower_components/components-font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/player.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/authentication.css">
   </head>
+   <% if (locals.username) { %>
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="header-wrapper">
@@ -17,24 +19,27 @@
         </div>
         <div id="custom-search-input">
                 <div class="search-box input-group col-md-12">
-                    <input id="inputSearch" type="text" class="form-control input-lg" placeholder="Search...">
+                    <input id="inputSearch" type="text" class="form-control input-lg" placeholder="Search..." >
                     <span class="input-group-btn">
-                        <buttonn id="btnSearch" class="btn btn-info btn-lg" type="button">
+                        <buttonn id="btnSearch" class="btn btn-info btn-lg search-button" type="button">
                             <i class="glyphicon glyphicon-search"></i>
                         </button>
                     </span>
                 </div>
           </div>
-         <div class="logged-user">Miguel</div>
+         <div class="logged-user">Welcome <%= username %></div>
         </div>
     </div>
     </nav>
+    <% } %>
     <%- body -%>
+     <% if (locals.username) { %>
      <footer class="footer">
       <div class="container">
-        <p class="text-muted">History | Playlists | Favorites| Queue </p>
+        <p class="text-muted"><button class="footer-button" id="history">History</button> | <button id="favorites" class="footer-button" >Favorites</button> | <button id="queue" class="footer-button" >Queue</button> | <button id="following" class="footer-button" >Following</button> </p>
       </div>
     </footer>
+    <% } %>
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

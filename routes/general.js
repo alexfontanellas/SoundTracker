@@ -7,7 +7,7 @@ const openAuraKey = 'ff6b1b41cb78a3020f7e52051d31c189c0e16d62';
 
 //Render main page - history
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  res.render("history");
+  res.render("history" , {username: req.user.username });
 });
 
 //Render search results

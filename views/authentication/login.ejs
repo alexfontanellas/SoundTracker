@@ -1,19 +1,24 @@
-<div class="page container">
-  <h2>Login</h2>
-  <form action="/login" method="POST">
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" name="username">
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" name="password">
-    </div>
-     <% if (typeof message != "undefined") { %>
-      <div class="error-message"><%= message %></div>
-    <% } %>
-    <div>
-      <input type="submit" value="Log In">
-    </div>
-  </form>
-</div>
+ <div class="form">
+      <ul class="tab-group">
+        <li class="tab active"><a href="/login">Log In</a></li>
+        <li class="tab"><a href="/signup">Sign Up</a></li>
+      </ul>  
+      <div class="tab-content">
+        <div id="login">   
+          <h1>Welcome Back!</h1>
+          <form action="/login" method="POST">
+            <div class="field-wrap">
+            <input placeholder="username" name="username" required/>
+          </div>
+          <div class="field-wrap">
+            <input placeholder="password" name="password" type="password"required/>
+          </div>
+            <% if (typeof message != "undefined") { %>
+            <div class="error-message"><%= message %></div>
+          <% } %>
+          <button type="submit" class="button button-block"/>Log In</button>
+          </form>
+        </div>
+      </div><!-- tab-content -->
+      
+</div> 
