@@ -1,6 +1,11 @@
 /* jshint esversion: 6 */
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+const User = require("../models/user");
+const Song = require("../models/song");
+
+
 const SpotifyWebApi = require('spotify-web-api-node');
 
 // SPOTIFY CREDENTIALS TO USE THE API
@@ -90,6 +95,23 @@ function parseSongs(myArray){ // It receives an array of objects
       }, function(err) {
         console.error(err);
       });
+  });
+
+  //do post
+  router.get("/favourites/new",(req,res,next) =>{
+    let username = req.user.username;
+    // Get the id of the song
+    let id = "5968d369234266193cf24185";
+    // Instead of updating the username, update the favourites
+    User.findOneAndUpdate({username},{$set: {username: username}},(err,user) => {
+      if(err){
+        return next(err);
+      }
+      else{
+        console.log("updated");
+      }
+    });
+
   });
 
 
