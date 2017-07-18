@@ -104,6 +104,7 @@ function parseSongs(myArray){ // It receives an array of objects
       id_song: req.body.info.songId,
       preview_url: req.body.info.songPreviewUrl,
       artists: [req.body.songArtists],
+      artist_id: req.body.info.artistId,
       artist_name: req.body.info.artistName,
       artist_bio: req.body.info.artistBio,
       artist_location: req.body.info.artistLocation,
@@ -129,6 +130,7 @@ function parseSongs(myArray){ // It receives an array of objects
       id_song: req.body.info.songId,
       preview_url: req.body.info.songPreviewUrl,
       artists: [req.body.songArtists],
+      artist_id: req.body.info.artistId,
       artist_name: req.body.info.artistName,
       artist_bio: req.body.info.artistBio,
       artist_location: req.body.info.artistLocation,
@@ -158,6 +160,7 @@ function parseSongs(myArray){ // It receives an array of objects
       id_song: req.body.info.songId,
       preview_url: req.body.info.songPreviewUrl,
       artists: [req.body.songArtists],
+      artist_id: req.body.info.artistId,
       artist_name: req.body.info.artistName,
       artist_bio: req.body.info.artistBio,
       artist_location: req.body.info.artistLocation,
@@ -174,13 +177,14 @@ function parseSongs(myArray){ // It receives an array of objects
    });
   });
 
-  router.post("/queue/new/:songId",(req,res,next) =>{
+  router.post("/queue/new",(req,res,next) =>{
     const songObject = {
       name: req.body.info.songName,
       image: req.body.info.songImage,
       id_song: req.body.info.songId,
       preview_url: req.body.info.songPreviewUrl,
       artists: [req.body.songArtists],
+      artist_id: req.body.info.artistId,
       artist_name: req.body.info.artistName,
       artist_bio: req.body.info.artistBio,
       artist_location: req.body.info.artistLocation,
@@ -197,6 +201,10 @@ function parseSongs(myArray){ // It receives an array of objects
      }
      return returnArray;
    }
+
+   router.get("/checkSession",(req,res,next) => {
+      res.send(req.session);
+   });
 
    router.get("/followed",(req,res,next) => {
      let username = req.user.username;
