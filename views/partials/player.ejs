@@ -7,7 +7,7 @@
         <a href="#" onclick="saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')">add to favourites</a> | add to queue | add to playlist |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a> | etc |
     </div>
 </div>
- <div class="artist-modal modal fade" id="<%= artistInfo.id %>" role="dialog" >
+ <div class="artist-modal modal fade"  id="<%= artistInfo.id %>" role="dialog" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content" id="back" >
                     <div class="modal-header">
@@ -17,19 +17,14 @@
                     <p>Name: <%=artistInfo.name %></p>
                     <p>Bio : <%=artistBio %></p>
                     <p><%=artistInfo.locationLabel %>: <%=artistInfo.location %></p>
-                    <div id="map" class="artist-map"></div>
+                    <div id="map_<%= artistInfo.id %>" class="artist-map"></div>
                 </div>
                 <div class="modal-footer">
                     <a class="btn btn-default" data-dismiss="modal">Close</a>
                 </div>
             </div>
       </div>
-
- <script
-    async
-    defer
-    src="https://maps.googleapis.com/maps/api/js?v=3.20&key=AIzaSyDHylimdPIr0Lfc6WzCjS47B7mrNrTQSJ0&callback=initialize">
-</script>
+</div>
 <script>
 
 function saveToFavorite(song, artistInfo, artistBio) {
@@ -65,35 +60,38 @@ function saveToFavorite(song, artistInfo, artistBio) {
 }
 
 setTimeout(function(){ $('#<%= artistInfo.id %>').on('shown.bs.modal', function () {
-    google.maps.event.trigger(map, "resize");
-    map.panTo(marker.getPosition());
+    google.maps.event.trigger(map["<%= artistInfo.id %>"], "resize");
+    map["<%= artistInfo.id %>"].panTo(marker["<%= artistInfo.id %>"].getPosition());
 }); }, 1000);
-var marker;
-var map;
-function initialize() {
-    map = new google.maps.Map(document.getElementById('map'), {
+
+setTimeout(function(){
+initializeMaps["<%= artistInfo.id %>"] = function() {
+    map["<%= artistInfo.id %>"] = new google.maps.Map(document.getElementById('map_<%= artistInfo.id %>'), {
         zoom: 4
     });
     var geocoder = new google.maps.Geocoder();
-        geocodeAddress(geocoder, map);
+        setGeoCoder["<%= artistInfo.id %>"](geocoder, map["<%= artistInfo.id %>"]);
 
-    }
+ }
+}, 500);
 
-    function geocodeAddress(geocoder, resultsMap) {
-    var address = '<%= artistInfo.location %>'
-    geocoder.geocode({'address': address}, function(results, status) {
-        if (status === 'OK') {
-        resultsMap.setCenter(results[0].geometry.location);
-        marker = new google.maps.Marker({
-            map: resultsMap,
-            position: results[0].geometry.location
+setTimeout(function(){
+setGeoCoder["<%= artistInfo.id %>"] = function (geocoder, resultsMap) {
+        var address = '<%= artistInfo.location %>'
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            marker["<%= artistInfo.id %>"] = new google.maps.Marker({
+                map: resultsMap,
+                position: results[0].geometry.location
+            });
+
+            } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+            }
         });
-
-        } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
     }
+}, 500);
 
 
 </script>

@@ -1,22 +1,25 @@
-<div class="page container">
-  <h2>Signup</h2>
-  <form action="/signup" method="POST" id="form-container">
-    <label for="username">Username</label>
-    <input id="username" type="text" name="username" placeholder="JonSnow">
-    <br><br>
-    <label for="password">Password</label>
-    <input id="password" type="password" name="password" placeholder="Your password">
-    
-    <% if (typeof message !== "undefined") { %>
-      <div class="error-message"><%= message %></div>
-    <% } %>
-    <br><br>
-    
-    <button>Create account</button>
+<div class="form">
+  <ul class="tab-group">
+    <li class="tab"><a href="/login">Log In</a></li>
+    <li class="tab active"><a href="/signup">Sign Up</a></li>
+  </ul> 
+  <div class="tab-content">
+          <div id="signup">   
+            <h1>Sign Up for Free</h1>
+            <form action="/signup" method="POST">
+            <div class="field-wrap">
+              <input placeholder="username" name="username" type="text"required autocomplete="off"/>
+            </div>
+            <div class="field-wrap">
+              <input placeholder="password" name="password" type="password"required autocomplete="off"/>
+            </div>
+            <% if (typeof message !== "undefined") { %>
+            <div class="error-message"><%= message %></div>
+            <% } %>   
+            <button type="submit" class="button button-block"/>Get Started</button>
+            </form>
+          </div>
+        </div>
+    </div>
+  </div>
 
-    <p class="account-message">
-      Do you already have an account?
-      <a href="/login">Login</a>
-    </p>
-  </form>
-</div>

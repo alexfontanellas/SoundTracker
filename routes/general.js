@@ -4,6 +4,8 @@ const ensureLogin = require("connect-ensure-login");
 const request = require('request');
 const musicGraphClientId = 'db794a979fe10f6b58674dcfc7ec2cfc';
 const openAuraKey = 'ff6b1b41cb78a3020f7e52051d31c189c0e16d62';
+const User = require("../models/user");
+
 
 const User = require("../models/user");
 
@@ -12,12 +14,22 @@ const User = require("../models/user");
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
   req.session.myQueue = [];
   res.render("history");
+     let username = req.user.username;
+     let history = [];
+     User.findOne({username}, (err,user) => {
+     if(err){
+       return next(err);
+     } else{
+       history = user.history;
+       res.render("history", {username: req.user.username, history });
+     }
+   });
 });
 
 
 //Render search results
 router.get("/searchresults", ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  res.render("searchresults");
+  res.render("searchresults" , {username: req.user.username });
 });
 
 //Render play single music
@@ -52,9 +64,35 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
                 artistInfo.locationLabel = 'Location Formed';
                 artistInfo.location = result.fact_card.media[0].data.location_formed;
               }
-              console.log(artistInfo.locationLabel);
-              console.log(artistInfo.location);
-              res.render("playsingle", { song, artistInfo, artistBio});
+
+
+              //save to history
+              let username = req.user.username;
+              const songObject = {
+                name: song.name,
+                image: song.image,
+                id_song: song.id,
+                preview_url: song.previewUrl,
+                artists: [req.body.songArtists],
+                artist_name: artistInfo.name,
+                artist_bio: artistBio,
+                artist_location: artistInfo.location,
+                artist_locationLabel:  artistInfo.locationLabel
+              };
+
+              let myHistory = req.user.history;
+              myHistory.push(songObject);
+              User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
+                if(err){
+                  return next(err);
+                }
+                else{
+                  console.log("updated");
+                }
+              });
+
+              //render play control
+              res.render("playsingle", { song, artistInfo, artistBio, username: req.user.username});
            }
         }));
 
@@ -62,20 +100,6 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
       console.log(error);
     }
   }));
-  /*request('http://api.musicgraph.com/api/v2/artist/search?api_key=' + musicGraphClientId + '&name=' + artistName, ((error, response, body) => {
-    if (!error && response.statusCode == 200) {
-        console.log('ok')
-        let result =  JSON.parse(response.body);
-        artistInfo.name = result.data[0].name;
-        artistInfo.country = result.data[0].country_of_origin;
-        artistInfo.genre = result.data[0].main_genre;
-        artistInfo.decade = result.data[0].decade;
-        res.render("playsingle", { song, artistInfo, songName });
-    } else {
-      console.log(error);
-    }
-  }));*/
-
 });
 
 //Render queue
@@ -88,8 +112,37 @@ router.get("/resultsqueue", ensureLogin.ensureLoggedIn(),(req,res,next) => {
 
 //Render favorites
 router.get("/favorites",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
-  res.render("favorites");
+     let username = req.user.username;
+     let favourites = [];
+     User.findOne({username}, (err,user) => {
+     if(err){
+       return next(err);
+     }
+     else{
+       favourites = user.favourites;
+       console.log('favourites', favourites);
+       console.log(user.favourites);
+       res.render("favorites", {username: req.user.username, favourites });
+     }
+   });
+
 });
+
+//Render history
+router.get("/history",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
+     let username = req.user.username;
+     let history = [];
+     User.findOne({username}, (err,user) => {
+     if(err){
+       return next(err);
+     } else{
+       history = user.history;
+       res.render("history", {username: req.user.username, history });
+     }
+   });
+
+});
+
 
 //Render playlists
 router.get("/playlists",  ensureLogin.ensureLoggedIn(),(req,res,next) => {

@@ -91,7 +91,7 @@ function parseSongs(myArray){ // It receives an array of objects
           }
         });
         allSongs = parseSongs(allSongs);
-        res.render("searchresults", {allSongs});
+        res.render("searchresults", {allSongs, username: req.user.username});
       }, function(err) {
         console.error(err);
       });

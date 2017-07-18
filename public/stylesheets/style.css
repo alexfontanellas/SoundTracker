@@ -34,8 +34,9 @@ body {
 }
 
 .logged-user {
-    padding-top: 12px;
+    padding-top: 6px;
     padding-left: 10px;
+    text-align: center;
 }
 
 .artist-map {
@@ -47,5 +48,36 @@ body {
   width: 80%;
 }
 
+.error-message {
+    color: #fff;
+    font-size: 20px;
+    position: absolute;
+    top: 422px;
+}
+
+.navbar-default { 
+  background-color: #2a3943;
+  color:#fff;
+}
+
+.navbar-default .navbar-brand {
+    color: #fff;
+}
+
+.search-button {
+  background-color: #1ab188;
+  border-color: #1ab188;
+}
+
+.footer-button {
+    height: 45px;
+    width: 130px;
+    background-color: #1ab188;
+    color:#fff;
+    border: none;
+    outline:none;
+    margin-left: 30px;
+    text-transform: uppercase;
+}
 
 
