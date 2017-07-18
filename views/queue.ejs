@@ -1,0 +1,22 @@
+<div class="page container">
+  <h2>Queue</h2>
+  <% queue.forEach((element) => { %>
+  <%  let song = { name: element.name, previewUrl: element.preview_url} %>
+  <%  let artistInfo = { id: element._id, name: element.artist_name, location: element.artist_location, locationLabel: element.artist_locationLabel} %>
+  <%  let artistBio = element.artist_bio %>
+  <% include partials/player.ejs %>
+  <% }) %>
+</div>
+ <script 
+    async 
+    defer 
+    src="https://maps.googleapis.com/maps/api/js?v=3.20&key=AIzaSyDHylimdPIr0Lfc6WzCjS47B7mrNrTQSJ0">
+</script>
+<script>
+setTimeout(function(){ 
+    for (var property in initializeMaps) {
+      initializeMaps[property]();
+    }
+  }, 2000);
+</script>
+

@@ -10,13 +10,13 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/player.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/authentication.css">
   </head>
-   <% if (locals.username) { %>
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="header-wrapper">
         <div class="title">
           <a class="navbar-brand" href="/">Sound Track</a>
         </div>
+         <% if (locals.username) { %>
         <div id="custom-search-input">
                 <div class="search-box input-group col-md-12">
                     <input id="inputSearch" type="text" class="form-control input-lg" placeholder="Search..." >
@@ -28,15 +28,15 @@
                 </div>
           </div>
          <div class="logged-user">Welcome <%= username %></div>
+           <% } %>
         </div>
     </div>
     </nav>
-    <% } %>
     <%- body -%>
      <% if (locals.username) { %>
      <footer class="footer">
       <div class="container">
-        <p class="text-muted"><button class="footer-button" id="history" onclick="window.location='/history'" >History</button><button id="favorites" onclick="window.location='/favorites'" class="footer-button" >Favorites</button><button id="queue" class="footer-button" >Queue</button><button id="following" class="footer-button" >Following</button> </p>
+        <p class="text-muted"><button class="footer-button" id="history" onclick="window.location='/history'" >History</button><button id="favorites" onclick="window.location='/favorites'" class="footer-button" >Favorites</button><button id="queue" onclick="window.location='/queue'"  class="footer-button" >Queue</button><button id="following" onclick="window.location='/followed'" class="footer-button" >Following</button> </p>
       </div>
     </footer>
     <% } %>

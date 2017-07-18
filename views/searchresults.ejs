@@ -4,6 +4,7 @@
        <form action="/playsingle" method="POST">
             <input type="hidden" name="preview" value="<%= song.preview_url %>">
             <input type="hidden" name="artist" value="<%= song.artists[0].name %>">
+            <input type="hidden" name="artistId" value="<%= song.artists[0].id %>">
             <input type="hidden" name="songName" value="<%= song.name %>">
             <input type="hidden" name="songId" value="<%= song.id %>">
             <input type="hidden" name="songImage" value="<%= song.image %>">

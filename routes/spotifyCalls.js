@@ -234,7 +234,7 @@ function parseSongs(myArray){ // It receives an array of objects
 
     });
     function doneLoopingArtists(myArray){
-      res.render("followed", {username: req.user.username, myArray});
+      res.render("followed", {username: req.user.username, myArray });
     }
   });
 

@@ -9,7 +9,7 @@ const User = require("../models/user");
 
 //Render main page - history
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  req.session.myQueue = [];
+     req.session.myQueue = [];
      let username = req.user.username;
      let history = [];
      User.findOne({username}, (err,user) => {
@@ -38,14 +38,15 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
   };
 
   let artistName = req.body.artist;
+  let artistId = req.body.artistId;
   let artistInfo = {};
   request('http://api.openaura.com/v1/search/artists_all?q='+ artistName + '&api_key=ff6b1b41cb78a3020f7e52051d31c189c0e16d62', ((error, response, body) => {
     if (!error && response.statusCode == 200) {
         let result =  JSON.parse(response.body);
 
         let firstFoundArtist = result[0];
-        let artistId = firstFoundArtist.oa_artist_id;
-        request('http://api.openaura.com/v1/info/artists/' + artistId + '?id_type=oa%3Aartist_id&api_key=ff6b1b41cb78a3020f7e52051d31c189c0e16d62', ((error, response, body) => {
+        let openauraArtistId = firstFoundArtist.oa_artist_id;
+        request('http://api.openaura.com/v1/info/artists/' + openauraArtistId + '?id_type=oa%3Aartist_id&api_key=ff6b1b41cb78a3020f7e52051d31c189c0e16d62', ((error, response, body) => {
            if (!error && response.statusCode == 200) {
              let result =  JSON.parse(response.body);
               artistInfo.id = artistId;
@@ -139,15 +140,16 @@ router.get("/history",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
 
 });
 
+//Render queue
+router.get("/queue",(req,res,next) => {
+  let queue = req.session.myQueue;
+  res.render("queue", {username: req.user.username, queue });
+ });
+
 
 //Render playlists
 router.get("/playlists",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
   res.render("playlists");
-});
-
-//Followed artists
-router.get("/followed",  ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  res.render("followed");
 });
 
 router.get("/logout",ensureLogin.ensureLoggedIn(), (req, res, next) => {
