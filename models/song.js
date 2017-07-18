@@ -11,6 +11,7 @@ const songSchema = new Schema({
   id_song: String,
   preview_url: String,
   // If time, create a artist object with all of its info
+  artist_id: String,
   artist_name: String,
   artist_bio: String,
   artist_location: String,
