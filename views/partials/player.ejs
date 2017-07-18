@@ -4,7 +4,7 @@
     </audio>
     <div class="audio-options">
         <div><%= song.name %></div>
-        <a href="#" onclick="saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')">add to favourites</a> | add to queue | add to playlist |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a> | etc |
+        <a href="#" onclick="saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')">add to favourites</a> | <a href="#" onclick="saveToQueue('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')" > add to queue </a> | <a href="#" onclick="saveToFollowingArtists('<%= artistInfo.id %>')">follow this artist </a> |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a>
     </div>
 </div>
  <div class="artist-modal modal fade"  id="<%= artistInfo.id %>" role="dialog" >
@@ -30,9 +30,6 @@
 function saveToFavorite(song, artistInfo, artistBio) {
     song = JSON.parse(song);
     artistInfo = JSON.parse(artistInfo);
-    console.log(song);
-    console.log(artistInfo);
-    console.log(artistBio);
     const info = {
         songName: song.name,
         songImage: song.image,
@@ -51,10 +48,55 @@ function saveToFavorite(song, artistInfo, artistBio) {
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
         success: function(data) {
-            console.log(data);
+           
         },
         error:   function(data) {
-            console.log(data);
+           
+        }
+  });
+}
+
+function saveToQueue(song, artistInfo, artistBio) {
+    song = JSON.parse(song);
+    artistInfo = JSON.parse(artistInfo);
+    const info = {
+        songName: song.name,
+        songImage: song.image,
+        songId: song.id,
+        songPreviewUrl: song.previewUrl,
+        artistName: artistInfo.name,
+        artistBio: artistBio,
+        artistLocation: artistInfo.location,
+        artistLocationLabel: artistInfo.locationLabel,
+
+
+    };
+      $.ajax({
+        method:  'POST',
+        url:     '/queue/new/',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        data: { info: info },
+        success: function(data) {
+            
+        },
+        error:   function(data) {
+            
+        }
+  });
+}
+
+function saveToFollowingArtists(artistId) {
+    const info = {
+        artistId: artistId,
+    };
+      $.ajax({
+        method:  'POST',
+        url:     '/artist/new/',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        data: { info: info },
+        success: function(data) {        
+        },
+        error:   function(data) {      
         }
   });
 }

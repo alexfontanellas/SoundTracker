@@ -7,13 +7,9 @@ const openAuraKey = 'ff6b1b41cb78a3020f7e52051d31c189c0e16d62';
 const User = require("../models/user");
 
 
-const User = require("../models/user");
-
-
 //Render main page - history
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  req.session.myQueue = [];
-  res.render("history");
+     req.session.myQueue = [];
      let username = req.user.username;
      let history = [];
      User.findOne({username}, (err,user) => {
@@ -143,15 +139,16 @@ router.get("/history",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
 
 });
 
+//Render queue
+router.get("/queue",(req,res,next) => {
+  let queue = req.session.myQueue;
+  res.render("queue", {username: req.user.username, queue });
+ });
+
 
 //Render playlists
 router.get("/playlists",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
   res.render("playlists");
-});
-
-//Followed artists
-router.get("/followed",  ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  res.render("followed");
 });
 
 router.get("/logout",ensureLogin.ensureLoggedIn(), (req, res, next) => {
