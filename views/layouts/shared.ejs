@@ -10,13 +10,13 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/player.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/authentication.css">
   </head>
-   <% if (locals.username) { %>
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="header-wrapper">
         <div class="title">
           <a class="navbar-brand" href="/">Sound Track</a>
         </div>
+         <% if (locals.username) { %>
         <div id="custom-search-input">
                 <div class="search-box input-group col-md-12">
                     <input id="inputSearch" type="text" class="form-control input-lg" placeholder="Search..." >
@@ -28,10 +28,10 @@
                 </div>
           </div>
          <div class="logged-user">Welcome <%= username %></div>
+           <% } %>
         </div>
     </div>
     </nav>
-    <% } %>
     <%- body -%>
      <% if (locals.username) { %>
      <footer class="footer">
