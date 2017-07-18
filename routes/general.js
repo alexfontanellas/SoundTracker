@@ -49,6 +49,7 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
         request('http://api.openaura.com/v1/info/artists/' + openauraArtistId + '?id_type=oa%3Aartist_id&api_key=ff6b1b41cb78a3020f7e52051d31c189c0e16d62', ((error, response, body) => {
            if (!error && response.statusCode == 200) {
              let result =  JSON.parse(response.body);
+            
               artistInfo.id = artistId;
               artistInfo.name = result.name;
               //artistInfo.bio = result.bio.media[0].data.text;
@@ -62,7 +63,7 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
                 artistInfo.location = result.fact_card.media[0].data.location_formed;
               }
 
-
+               console.log('artistid ' + artistInfo.id);
               //save to history
               let username = req.user.username;
               const songObject = {
@@ -71,6 +72,7 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
                 id_song: song.id,
                 preview_url: song.previewUrl,
                 artists: [req.body.songArtists],
+                artist_id: artistInfo.id,
                 artist_name: artistInfo.name,
                 artist_bio: artistBio,
                 artist_location: artistInfo.location,

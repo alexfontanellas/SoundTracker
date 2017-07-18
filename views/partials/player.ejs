@@ -35,6 +35,7 @@ function saveToFavorite(song, artistInfo, artistBio) {
         songImage: song.image,
         songId: song.id,
         songPreviewUrl: song.previewUrl,
+        artistId: artistInfo.id,
         artistName: artistInfo.name,
         artistBio: artistBio,
         artistLocation: artistInfo.location,
@@ -64,6 +65,7 @@ function saveToQueue(song, artistInfo, artistBio) {
         songImage: song.image,
         songId: song.id,
         songPreviewUrl: song.previewUrl,
+        artistId: artistInfo.id,
         artistName: artistInfo.name,
         artistBio: artistBio,
         artistLocation: artistInfo.location,
@@ -73,7 +75,7 @@ function saveToQueue(song, artistInfo, artistBio) {
     };
       $.ajax({
         method:  'POST',
-        url:     '/queue/new/',
+        url:     '/queue/new',
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
         success: function(data) {
