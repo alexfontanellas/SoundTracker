@@ -10,6 +10,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const expressLayouts = require('express-ejs-layouts');
 const flash = require("connect-flash");
+const dotenv = require("dotenv").config();
 //passport
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -18,7 +19,8 @@ const User = require("./models/user");
 
 
 //mongoose.connect('mongodb://localhost:27017/sound-tracker');
-mongoose.connect('mongodb://heroku_svb4b91q:eb23cooh56s9818jpngnl79lp5@ds161032.mlab.com:61032/heroku_svb4b91q');
+mongoose.connect(process.env.MONGODB_URI);
+
 
 const general = require('./routes/general');
 const spotifyCalls = require('./routes/spotifyCalls');
