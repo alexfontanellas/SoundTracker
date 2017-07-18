@@ -43,7 +43,7 @@ authRoutes.post("/signup", (req, res, next) => {
       password: hashPass,
       history: [],
       favourites: [],
-      artists: [],
+      artists: ["4dpARuHxo51G3z768sgnrY","73sIBHcqh3Z3NyqHKZ7FOL"],
       playLists: []
     });
 
@@ -68,5 +68,9 @@ authRoutes.post("/login", passport.authenticate("local", {
   failureFlash: true,
   passReqToCallback: true
 }));
+
+
+
+
 
 module.exports = authRoutes;

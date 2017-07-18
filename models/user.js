@@ -13,7 +13,8 @@ const userSchema = new Schema({
   password: String,
   history: [Song.schema],
   favourites: [Song.schema],
-  artists: [Artist.schema],
+  artists: [String],
+  //artists: [Artist.schema],
   playLists: [Playlist.schema],
   queue: [Song.schema]
 }, {
