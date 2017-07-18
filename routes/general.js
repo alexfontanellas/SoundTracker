@@ -9,7 +9,16 @@ const User = require("../models/user");
 
 //Render main page - history
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
-  res.render("history" , {username: req.user.username });
+     let username = req.user.username;
+     let history = [];
+     User.findOne({username}, (err,user) => {
+     if(err){
+       return next(err);
+     } else{
+       history = user.history;
+       res.render("history", {username: req.user.username, history });
+     }
+   });
 });
 
 //Render search results
@@ -49,8 +58,34 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
                 artistInfo.locationLabel = 'Location Formed';
                 artistInfo.location = result.fact_card.media[0].data.location_formed;
               }
-              console.log(artistInfo.locationLabel);
-              console.log(artistInfo.location);
+
+
+              //save to history 
+              let username = req.user.username;
+              const songObject = {
+                name: song.name,
+                image: song.image,
+                id_song: song.id,
+                preview_url: song.previewUrl,
+                artists: [req.body.songArtists],
+                artist_name: artistInfo.name,
+                artist_bio: artistBio,
+                artist_location: artistInfo.location,
+                artist_locationLabel:  artistInfo.locationLabel
+              };
+
+              let myHistory = req.user.history;
+              myHistory.push(songObject);
+              User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
+                if(err){
+                  return next(err);
+                }
+                else{
+                  console.log("updated");
+                }
+              });
+
+              //render play control
               res.render("playsingle", { song, artistInfo, artistBio, username: req.user.username});
            }
         }));
@@ -86,6 +121,22 @@ router.get("/favorites",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
    });
   
 });
+
+//Render history
+router.get("/history",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
+     let username = req.user.username;
+     let history = [];
+     User.findOne({username}, (err,user) => {
+     if(err){
+       return next(err);
+     } else{
+       history = user.history;
+       res.render("history", {username: req.user.username, history });
+     }
+   });
+  
+});
+
 
 //Render playlists
 router.get("/playlists",  ensureLogin.ensureLoggedIn(),(req,res,next) => {

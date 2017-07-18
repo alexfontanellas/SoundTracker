@@ -157,32 +157,6 @@ function parseSongs(myArray){ // It receives an array of objects
    });
 
 
- router.post("/history/new/:songId",(req,res,next) =>{
-    let username = req.user.username;
-    const songObject = {
-      name: req.body.info.songName,
-      image: req.body.info.songImage,
-      id_song: req.body.info.songId,
-      preview_url: req.body.info.songPreviewUrl,
-      artists: [req.body.songArtists],
-      artist_name: req.body.info.artistName,
-      artist_bio: req.body.info.artistBio,
-      artist_location: req.body.info.artistLocation,
-      artist_locationLabel: req.body.info.artistLocationLabel
-    };
-
-   let myHistory = req.user.history;
-   myHistory.push(songObject);
-   // Instead of updating the username, update the favourites
-   User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
-     if(err){
-       return next(err);
-     }
-     else{
-       console.log("updated");
-     }
-   });
-  });
 
   router.post("/queue/new/:songId",(req,res,next) =>{
     let username = req.user.username;

@@ -18,7 +18,6 @@ const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/user");
 
 
-//mongoose.connect('mongodb://localhost:27017/sound-tracker');
 mongoose.connect(process.env.MONGODB_URI);
 
 
