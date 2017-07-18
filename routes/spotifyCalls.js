@@ -1,7 +1,6 @@
 /* jshint esversion: 6 */
 const express = require('express');
 const router = express.Router();
-const promise = require("promise");
 
 const User = require("../models/user");
 const Song = require("../models/song");
@@ -70,7 +69,6 @@ function parseSongs(myArray){ // It receives an array of objects
             myObjectSong.id = element.id;
             myObjectSong.name = element.name;
 
-
             // information about the artist
 
             let arrayArtists = [];
@@ -114,11 +112,8 @@ function parseSongs(myArray){ // It receives an array of objects
     let myFav = req.user.favourites;
     myFav.push(songObject);
 
-    let myQueue = req.user.queue;
-    myQueue.push(songObject);
-
     // Instead of updating the username, update the favourites
-    User.findOneAndUpdate({username},{$set: {favourites: myFav,queue: myQueue}}, (err,user) => {
+    User.findOneAndUpdate({username},{$set: {favourites: myFav}}, (err,user) => {
       if(err){
         return next(err);
       }
@@ -140,7 +135,7 @@ function parseSongs(myArray){ // It receives an array of objects
       artist_locationLabel: req.body.info.artistLocationLabel
     };
 
-     let indexPlaylist = req.params.index;
+     let indexPlaylist = req.body.info.indexPlaylist;
 
      let myPlaylist = req.user.playLists;
      myPlaylist[index].push(songObject);
@@ -180,53 +175,83 @@ function parseSongs(myArray){ // It receives an array of objects
   });
 
   router.post("/queue/new/:songId",(req,res,next) =>{
+    const songObject = {
+      name: req.body.info.songName,
+      image: req.body.info.songImage,
+      id_song: req.body.info.songId,
+      preview_url: req.body.info.songPreviewUrl,
+      artists: [req.body.songArtists],
+      artist_name: req.body.info.artistName,
+      artist_bio: req.body.info.artistBio,
+      artist_location: req.body.info.artistLocation,
+      artist_locationLabel: req.body.info.artistLocationLabel
+    };
     req.session.myQueue.push(songObject);
     req.session.save();
    });
 
+   function parseArtists(myArray){
+     let returnArray = [];
+     for(var i = 0;i<myArray.length;i++){
+       returnArray.push(parseSongs(myArray[i]));
+     }
+     return returnArray;
+   }
 
-
-
-   router.get("/getArtist",(req,res,next) => {
+   router.get("/followed",(req,res,next) => {
      let username = req.user.username;
      let allAlbums = [];
      User.findOne({username},(err,user) => {
        let followingArtists = user.artists;
-       for(var i = 0,k = 0;i<followingArtists.length;i++){
-         let myAlbum = [];
-         spotifyApi.getArtistAlbums(followingArtists[i])
-           .then(function(data) {
-             let result = data.body.items;
-             result.forEach((element) => {
+       if(followingArtists.length === 0){
+         res.render("followed", {username: req.user.username, myArray : []} );
+       }
+       else{
+         for(var i = 0,k = 0;i<followingArtists.length;i++){
+           let myAlbum = [];
+           spotifyApi.getArtistAlbums(followingArtists[i])
+             .then(function(data) {
+               let result = data.body.items;
+               result.forEach((element) => {
                let myObject = {};
                myObject.image = element.images[0].url;
-               myAlbum.push(myObject);
-             });
-             allAlbums.push(myAlbum);
-             k++;
-             if(k === followingArtists.length){
-               doneLoopingArtists(allAlbums);
-             }
-           }, function(err) {
-             console.error(err);
-          });
-      }
+               myObject.name = element.name;
+               //myObject.nameArtist = element.artist.name;
+               // myObject.artist = element.artists[0];
+                myAlbum.push(myObject);
+               });
+               allAlbums.push(myAlbum);
+               k++;
+               if(k === followingArtists.length){
+                 allAlbums = parseArtists(allAlbums);
+                 doneLoopingArtists(allAlbums);
+               }
+             }, function(err) {
+               console.error(err);
+            });
+        }
+       }
+
     });
     function doneLoopingArtists(myArray){
-      console.log("There goes my array");
-      console.log(myArray);
-      res.render("favorites");
+      res.render("followed", {username: req.user.username, myArray});
     }
-
-
   });
 
+  router.post("/artist/new",(req,res,next) => {
+    let id_artist = req.body.info.artistId;
+    let username = req.user.username;
 
+    let myArtists = req.user.artists;
+    myArtists.push(id_artist);
 
+    // Instead of updating the username, update the favourites
+    User.findOneAndUpdate({username},{$set: {artists: myArtists}}, (err,user) => {
+      if(err){
+        return next(err);
+      }
+        });
+  });
 
-   router.get("/showQueue",(req,res,next) => {
-     console.log(req.session);
-     res.send(req.session.myQueue);
-   });
 
   module.exports = router;

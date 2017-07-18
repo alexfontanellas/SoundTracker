@@ -1,3 +1,10 @@
 <div class="page container">
   <h2>Followed</h2>
+  <% myArray.forEach((element) => { %>
+    <% element.forEach((el) => { %>
+  <ul>
+     <li><%= el.name %></li>
+  </ul>
+<% }) %>
+<% }) <%></%>
 </div>

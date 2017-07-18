@@ -43,7 +43,7 @@ authRoutes.post("/signup", (req, res, next) => {
       password: hashPass,
       history: [],
       favourites: [],
-      artists: ["4dpARuHxo51G3z768sgnrY","73sIBHcqh3Z3NyqHKZ7FOL"],
+      artists: [],
       playLists: []
     });
 

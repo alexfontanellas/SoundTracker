@@ -7,13 +7,9 @@ const openAuraKey = 'ff6b1b41cb78a3020f7e52051d31c189c0e16d62';
 const User = require("../models/user");
 
 
-const User = require("../models/user");
-
-
 //Render main page - history
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
   req.session.myQueue = [];
-  res.render("history");
      let username = req.user.username;
      let history = [];
      User.findOne({username}, (err,user) => {
