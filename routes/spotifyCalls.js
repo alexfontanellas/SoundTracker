@@ -210,7 +210,7 @@ function checkDuplicateLists(database,add){
    });
 
    router.get("/followed/individual",(req,res,next) => {
-     let albumId = req.body.albumId;
+     let albumId = req.query.albumId;
      let tracksArray = [];
      spotifyApi.getAlbumTracks(albumId, { limit : 10, offset : 1 })
        .then(function(data) {
@@ -224,8 +224,7 @@ function checkDuplicateLists(database,add){
              tracksArray.push(myObject);
            }
          });
-         res.send(tracksArray);
-         //res.render("songsAlbum", { tracksArray });
+         res.render("songsalbum", { tracksArray, username: req.user.username });
        }, function(err) {
          console.log('Something went wrong!', err);
      });

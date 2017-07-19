@@ -1,10 +1,14 @@
 <div class="page container">
   <h2>Followed</h2>
+  <div class="followed">
   <% myArray.forEach((element) => { %>
     <% element.forEach((el) => { %>
-  <ul>
-     <li><%= el.name %></li>
-  </ul>
+    <div class="followed-albums">
+      <a href="/followed/individual?albumId=<%= el.id %>">
+        <img src="<%= el.image%>"/> 
+      </a>
+    </div>
 <% }) %>
+  </div>
 <% }) %>
 </div>
