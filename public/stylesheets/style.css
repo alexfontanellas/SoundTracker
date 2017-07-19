@@ -250,3 +250,23 @@ body {
     width: 16px;
     margin-right: 4px;
 }
+
+.followed {
+    
+}
+
+.followed-albums {
+    float: left;
+    margin: 25px;
+
+}
+
+.followed-albums img {
+    width: 200px;
+}
+
+.songs-album {
+    text-align: center;
+    padding-top: 20px;
+
+}

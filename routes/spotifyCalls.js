@@ -224,7 +224,7 @@ function checkDuplicateLists(database,add){
              tracksArray.unshift(myObject);
            }
          });
-         res.render("songsalbum", { tracksArray });
+         res.render("songsalbum", { tracksArray, username: req.user.username });
        }, function(err) {
          console.log('Something went wrong!', err);
      });
