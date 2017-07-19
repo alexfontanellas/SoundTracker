@@ -11,9 +11,9 @@
                 Your browser does not support the audio element.
         </audio>
         <div class="player-options">
-            <div><a href="#" onclick="saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')">Add to favourites</a></div>
-            <div><a href="#" onclick="saveToQueue('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')" > Add to queue </a></div>
-            <div><a href="#" onclick="saveToFollowingArtists('<%= artistInfo.id %>')">Follow this artist </a></div>
+            <div><a href="#" onclick="return saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')"><img class="player-options-icon" src="/images/like.png"/>Add to favourites</a></div>
+            <div><a href="#" onclick="return saveToQueue('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')" ><img class="player-options-icon" src="/images/plus-sign-to-add.png"/> Add to queue </a></div>
+            <div><a href="#" onclick="return saveToFollowingArtists('<%= artistInfo.id %>')">Follow this artist </a></div>
             <div><a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >Artist info</a></div>
         </div>
     </div>
@@ -67,6 +67,8 @@ function saveToFavorite(song, artistInfo, artistBio) {
            
         }
   });
+
+  return false;
 }
 
 function saveToQueue(song, artistInfo, artistBio) {
@@ -97,6 +99,7 @@ function saveToQueue(song, artistInfo, artistBio) {
             
         }
   });
+    return false;
 }
 
 function saveToFollowingArtists(artistId) {
@@ -114,6 +117,7 @@ function saveToFollowingArtists(artistId) {
         error:   function(data) {      
         }
   });
+    return false;
 }
 
 setTimeout(function(){ $('#<%= artistInfo.id %>').on('shown.bs.modal', function () {

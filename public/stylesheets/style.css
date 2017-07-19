@@ -245,3 +245,8 @@ body {
     color:#000;
     margin-right: 14px;
 }
+
+.player-options-icon {
+    width: 16px;
+    margin-right: 4px;
+}
