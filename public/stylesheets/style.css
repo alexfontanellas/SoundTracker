@@ -38,10 +38,11 @@ body {
 
 
 .logged-user {
-    padding-top: 16px;
+    padding-top: 10px;
     padding-left: 129px;
     text-align: right;
     float: right;
+    font-size: 16px;
 }
 
 .artist-map {
@@ -269,4 +270,14 @@ body {
     text-align: center;
     padding-top: 20px;
 
+}
+
+.user-icon {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.logout-icon {
+    height: 30px;
+    margin-left: 10px;
 }
