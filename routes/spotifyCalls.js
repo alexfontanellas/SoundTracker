@@ -1,7 +1,6 @@
 /* jshint esversion: 6 */
 const express = require('express');
 const router = express.Router();
-
 const User = require("../models/user");
 const Song = require("../models/song");
 
@@ -108,6 +107,7 @@ function checkDuplicateLists(database,add){
   //do post
   router.post("/favourites/new",(req,res,next) =>{
     let username = req.user.username;
+    console.log('songimage', req.body.info.songImage);
     const songObject = {
       name: req.body.info.songName,
       image: req.body.info.songImage,
@@ -131,7 +131,12 @@ function checkDuplicateLists(database,add){
       if(err){
         return next(err);
       }
+      else {
+         res.end('{"success" : "Updated Successfully", "status" : 200}');
+      }
     });
+
+
 
   });
 
@@ -152,9 +157,7 @@ function checkDuplicateLists(database,add){
       req.session.myQueue.push(songObject);
     }
     req.session.save();
-
-
-
+    res.end('{"success" : "Updated Successfully", "status" : 200}');
    });
 
    function parseArtists(myArray){
@@ -207,8 +210,7 @@ function checkDuplicateLists(database,add){
    });
 
    router.get("/followed/individual",(req,res,next) => {
-     //let albumId = req.body.albumId;
-     let albumId = "0K4pIOOsfJ9lK8OjrZfXzd";
+     let albumId = req.body.albumId;
      let tracksArray = [];
      spotifyApi.getAlbumTracks(albumId, { limit : 10, offset : 1 })
        .then(function(data) {
@@ -246,6 +248,8 @@ function checkDuplicateLists(database,add){
     User.findOneAndUpdate({username},{$set: {artists: myArtists}}, (err,user) => {
       if(err){
         return next(err);
+      } else {
+        res.end('{"success" : "Updated Successfully", "status" : 200}');
       }
         });
   });
