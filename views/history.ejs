@@ -1,7 +1,7 @@
 <div class="page container">
   <h2>History</h2>
   <% history.forEach((element) => { %>
-  <%  let song = { name: element.name, previewUrl: element.preview_url} %>
+  <%  let song = { name: element.name, previewUrl: element.preview_url, image: element.image } %>
   <%  let artistInfo = { id: element.artist_id, name: element.artist_name, location: element.artist_location, locationLabel: element.artist_locationLabel} %>
   <%  let artistBio = element.artist_bio %>
   <% include partials/player.ejs %>

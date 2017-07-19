@@ -1,12 +1,24 @@
-<div>
-    <audio class="audio" src="<%= song.previewUrl %>" controls="">
-            Your browser does not support the audio element.
-    </audio>
-    <div class="audio-options">
-        <div><%= song.name %></div>
-        <a href="#" onclick="saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')">add to favourites</a> | <a href="#" onclick="saveToQueue('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')" > add to queue </a> | <a href="#" onclick="saveToFollowingArtists('<%= artistInfo.id %>')">follow this artist </a> |  <a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >more info</a>
+<div class="player">
+    <div class="player-image">
+        <img  src="<%= song.image %>" />
+    </div>
+    <div class="player-audio">
+         <div class="player-info">
+             <div class="player-info-artist"><%= artistInfo.name %></div>
+             <div class=""><%= song.name %></div>
+        </div>
+        <audio class="audio" src="<%= song.previewUrl %>" controls="">
+                Your browser does not support the audio element.
+        </audio>
+        <div class="player-options">
+            <div><a href="#" onclick="saveToFavorite('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')">Add to favourites</a></div>
+            <div><a href="#" onclick="saveToQueue('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')" > Add to queue </a></div>
+            <div><a href="#" onclick="saveToFollowingArtists('<%= artistInfo.id %>')">Follow this artist </a></div>
+            <div><a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" >Artist info</a></div>
+        </div>
     </div>
 </div>
+
  <div class="artist-modal modal fade"  id="<%= artistInfo.id %>" role="dialog" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content" id="back" >
@@ -49,7 +61,7 @@ function saveToFavorite(song, artistInfo, artistBio) {
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
         success: function(data) {
-           
+            toastr.success('Song added to favourites.');  
         },
         error:   function(data) {
            
@@ -79,7 +91,7 @@ function saveToQueue(song, artistInfo, artistBio) {
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
         success: function(data) {
-            
+            toastr.success('Song added to queue.');
         },
         error:   function(data) {
             
@@ -96,7 +108,8 @@ function saveToFollowingArtists(artistId) {
         url:     '/artist/new/',
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
-        success: function(data) {        
+        success: function(data) {
+            toastr.success('Now following artist.');
         },
         error:   function(data) {      
         }

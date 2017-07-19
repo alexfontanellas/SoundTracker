@@ -8,9 +8,14 @@
             <input type="hidden" name="songName" value="<%= song.name %>">
             <input type="hidden" name="songId" value="<%= song.id %>">
             <input type="hidden" name="songImage" value="<%= song.image %>">
-            <div><%= song.artists[0].name %></div>
-            <div><%= song.name %></div>
-            <div><button type="submit" onclick="" id="listenSong">Listen</button></div>
+            <div class="search-results">
+                <div><input type="image" name="submit" class="search-results-image" src="<%= song.image %>"></div>
+                <div class="search-results-details">
+                <div class="search-results-artist"><%= song.artists[0].name %></div>
+                <div class="search-results-song"><%= song.name %></div>
+                </div>
+              
+            </div>
         </form>
    <% }) %>
 </div>

@@ -97,6 +97,7 @@ function parseSongs(myArray){ // It receives an array of objects
   //do post
   router.post("/favourites/new",(req,res,next) =>{
     let username = req.user.username;
+    console.log('songimage', req.body.info.songImage);
     const songObject = {
       name: req.body.info.songName,
       image: req.body.info.songImage,
@@ -117,7 +118,12 @@ function parseSongs(myArray){ // It receives an array of objects
       if(err){
         return next(err);
       }
+      else {
+         res.end('{"success" : "Updated Successfully", "status" : 200}');
+      }
     });
+  
+ 
 
   });
 
@@ -151,47 +157,23 @@ function parseSongs(myArray){ // It receives an array of objects
    });
 
 
- router.post("/history/new/:songId",(req,res,next) =>{
-    let username = req.user.username;
-    const songObject = {
-      name: req.body.info.songName,
-      image: req.body.info.songImage,
-      id_song: req.body.info.songId,
-      preview_url: req.body.info.songPreviewUrl,
-      artists: [req.body.songArtists],
-      artist_id: req.body.info.artistId,
-      artist_name: req.body.info.artistName,
-      artist_bio: req.body.info.artistBio,
-      artist_location: req.body.info.artistLocation,
-      artist_locationLabel: req.body.info.artistLocationLabel
-    };
-
-   let myHistory = req.user.history;
-   myHistory.push(songObject);
-   // Instead of updating the username, update the favourites
-   User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
-     if(err){
-       return next(err);
-     }
-   });
+router.post("/queue/new",(req,res,next) =>{
+  const songObject = {
+    name: req.body.info.songName,
+    image: req.body.info.songImage,
+    id_song: req.body.info.songId,
+    preview_url: req.body.info.songPreviewUrl,
+    artists: [req.body.songArtists],
+    artist_id: req.body.info.artistId,
+    artist_name: req.body.info.artistName,
+    artist_bio: req.body.info.artistBio,
+    artist_location: req.body.info.artistLocation,
+    artist_locationLabel: req.body.info.artistLocationLabel
+  };
+  req.session.myQueue.push(songObject);
+  req.session.save();
+  res.end('{"success" : "Updated Successfully", "status" : 200}');
   });
-
-  router.post("/queue/new",(req,res,next) =>{
-    const songObject = {
-      name: req.body.info.songName,
-      image: req.body.info.songImage,
-      id_song: req.body.info.songId,
-      preview_url: req.body.info.songPreviewUrl,
-      artists: [req.body.songArtists],
-      artist_id: req.body.info.artistId,
-      artist_name: req.body.info.artistName,
-      artist_bio: req.body.info.artistBio,
-      artist_location: req.body.info.artistLocation,
-      artist_locationLabel: req.body.info.artistLocationLabel
-    };
-    req.session.myQueue.push(songObject);
-    req.session.save();
-   });
 
    function parseArtists(myArray){
      let returnArray = [];
@@ -256,6 +238,8 @@ function parseSongs(myArray){ // It receives an array of objects
     User.findOneAndUpdate({username},{$set: {artists: myArtists}}, (err,user) => {
       if(err){
         return next(err);
+      } else {
+        res.end('{"success" : "Updated Successfully", "status" : 200}');
       }
         });
   });

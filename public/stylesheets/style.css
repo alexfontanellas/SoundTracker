@@ -14,6 +14,11 @@ body {
 
 .search-box {
     padding-top: 2px;
+    width: 360px;
+}
+
+.search-box input {
+    border-radius: 0px;
 }
 
 
@@ -33,9 +38,10 @@ body {
 
 
 .logged-user {
-    padding-top: 6px;
-    padding-left: 10px;
-    text-align: center;
+    padding-top: 16px;
+    padding-left: 129px;
+    text-align: right;
+    float: right;
 }
 
 .artist-map {
@@ -67,6 +73,7 @@ body {
 .search-button {
   background-color: #1ab188;
   border-color: #1ab188;
+  display: none;
 }
 
 .footer-button {
@@ -78,6 +85,28 @@ body {
     outline:none;
     margin-left: 30px;
     text-transform: uppercase;
+}
+
+.menu {
+    padding-top: 12px;
+    padding-left: 100px;
+    font-size: 16px;
+}
+
+.menu div {
+    display: inline-block;
+    margin-left: 16px;
+}
+
+.menu a {
+    float: right;
+    color: #fff;
+    cursor: pointer;
+}
+
+.menu a:hover {
+    float: right;
+    color: #fff;
 }
 
 
@@ -153,4 +182,66 @@ body {
     color: #ababab;
     padding-top: 10px;
     width: 230px
+}
+
+.search-results {
+    padding-left: 100px;
+    padding-top: 30px;
+    display: inline-flex;
+}
+
+.search-results-image {
+    border: none;
+    width: 150px;
+    height: 150px;
+}
+
+.search-results-artist {
+    color: #31bda6;
+    font-size: 20px;
+}
+
+.search-results-song {
+    color: #34374f;
+}
+
+.player {
+    margin-top: 20px;
+    margin-left: 100px;
+    display: inline-flex;
+
+}
+
+.player-image {
+
+}
+
+.player-audio {
+    margin-left: 30px;
+    margin-top: 100px;
+    width: 500px;
+}
+
+.player-image img {
+    width: 250px;
+    height: 250px;
+}
+
+.player-info-artist {
+    color: #31bda6;
+    font-size: 20px;
+}
+
+.player-info-song {
+    color: #34374f;
+}
+
+.player-options {
+    margin-top: 34px;
+    display: inline-flex;
+}
+
+.player-options a {
+    color:#000;
+    margin-right: 14px;
 }

@@ -1,7 +1,7 @@
 <div class="page container">
   <h2>Favorites</h2>
   <% favourites.forEach((favourite) => { %>
-  <%  let song = { name: favourite.name, previewUrl: favourite.preview_url} %>
+  <%  let song = { name: favourite.name, previewUrl: favourite.preview_url, image: favourite.image } %>
   <%  let artistInfo = { id: favourite.artist_id, name: favourite.artist_name, location: favourite.artist_location, locationLabel: favourite.artist_locationLabel} %>
   <%  let artistBio = favourite.artist_bio %>
   <% include partials/player.ejs %>
