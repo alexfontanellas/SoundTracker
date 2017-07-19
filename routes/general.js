@@ -7,6 +7,16 @@ const openAuraKey = 'ff6b1b41cb78a3020f7e52051d31c189c0e16d62';
 const User = require("../models/user");
 
 
+
+function checkDuplicateLists(database,add){
+  for(var i = 0;i<database.length;i++){
+    if(database[i].name === add.name){
+      return false;
+    }
+  }
+  return true;
+}
+
 //Render main page - history
 router.get("/", ensureLogin.ensureLoggedIn(), (req,res,next) => {
      req.session.myQueue = [];
@@ -49,7 +59,7 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
         request('http://api.openaura.com/v1/info/artists/' + openauraArtistId + '?id_type=oa%3Aartist_id&api_key=ff6b1b41cb78a3020f7e52051d31c189c0e16d62', ((error, response, body) => {
            if (!error && response.statusCode == 200) {
              let result =  JSON.parse(response.body);
-            
+
               artistInfo.id = artistId;
               artistInfo.name = result.name;
               //artistInfo.bio = result.bio.media[0].data.text;
@@ -80,15 +90,17 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
               };
 
               let myHistory = req.user.history;
-              myHistory.push(songObject);
-              User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
-                if(err){
-                  return next(err);
-                }
-                else{
-                  console.log("updated");
-                }
-              });
+              if(checkDuplicateLists(myHistory,songObject)){
+                myHistory.push(songObject);
+                User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
+                  if(err){
+                    return next(err);
+                  }
+                  else{
+                    console.log("updated");
+                  }
+                });
+              }
 
               //render play control
               res.render("playsingle", { song, artistInfo, artistBio, username: req.user.username});

@@ -50,6 +50,16 @@ function parseSongs(myArray){ // It receives an array of objects
   return returnArray;
 }
 
+function checkDuplicateLists(database,add){
+  for(var i = 0;i<database.length;i++){
+    if(database[i].name === add.name){
+      database = database.splice(i,1);
+      return true;
+    }
+  }
+  return false;
+}
+
 
 // Retrieve information about the song the user searches
   router.get("/getSong",(req,res,next) => {
@@ -111,7 +121,10 @@ function parseSongs(myArray){ // It receives an array of objects
       artist_locationLabel: req.body.info.artistLocationLabel
     };
     let myFav = req.user.favourites;
-    myFav.push(songObject);
+    if(!checkDuplicateLists(myFav,songObject)){
+      myFav.push(songObject);
+    }
+
 
     // Instead of updating the username, update the favourites
     User.findOneAndUpdate({username},{$set: {favourites: myFav}}, (err,user) => {
@@ -120,61 +133,6 @@ function parseSongs(myArray){ // It receives an array of objects
       }
     });
 
-  });
-
-  router.post("playlist/new", (req,res,next) =>{
-    let username = req.user.username;
-    const songObject = {
-      name: req.body.info.songName,
-      image: req.body.info.songImage,
-      id_song: req.body.info.songId,
-      preview_url: req.body.info.songPreviewUrl,
-      artists: [req.body.songArtists],
-      artist_id: req.body.info.artistId,
-      artist_name: req.body.info.artistName,
-      artist_bio: req.body.info.artistBio,
-      artist_location: req.body.info.artistLocation,
-      artist_locationLabel: req.body.info.artistLocationLabel
-    };
-
-     let indexPlaylist = req.body.info.indexPlaylist;
-
-     let myPlaylist = req.user.playLists;
-     myPlaylist[index].push(songObject);
-     // Instead of updating the username, update the favourites
-     User.findOneAndUpdate({username},{$set: {playLists: myPlaylist}}, (err,user) => {
-       if(err){
-         return next(err);
-       }
-       else{
-       }
-     });
-   });
-
-
- router.post("/history/new/:songId",(req,res,next) =>{
-    let username = req.user.username;
-    const songObject = {
-      name: req.body.info.songName,
-      image: req.body.info.songImage,
-      id_song: req.body.info.songId,
-      preview_url: req.body.info.songPreviewUrl,
-      artists: [req.body.songArtists],
-      artist_id: req.body.info.artistId,
-      artist_name: req.body.info.artistName,
-      artist_bio: req.body.info.artistBio,
-      artist_location: req.body.info.artistLocation,
-      artist_locationLabel: req.body.info.artistLocationLabel
-    };
-
-   let myHistory = req.user.history;
-   myHistory.push(songObject);
-   // Instead of updating the username, update the favourites
-   User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
-     if(err){
-       return next(err);
-     }
-   });
   });
 
   router.post("/queue/new",(req,res,next) =>{
@@ -190,8 +148,13 @@ function parseSongs(myArray){ // It receives an array of objects
       artist_location: req.body.info.artistLocation,
       artist_locationLabel: req.body.info.artistLocationLabel
     };
-    req.session.myQueue.push(songObject);
+    if(!checkDuplicateLists(req.session.myQueue,songObject)){
+      req.session.myQueue.push(songObject);
+    }
     req.session.save();
+
+
+
    });
 
    function parseArtists(myArray){
@@ -201,11 +164,6 @@ function parseSongs(myArray){ // It receives an array of objects
      }
      return returnArray;
    }
-
-   router.get("/checkSession",(req,res,next) => {
-      res.send(req.session);
-   });
-
    router.get("/followed",(req,res,next) => {
      let username = req.user.username;
      let allAlbums = [];
@@ -221,12 +179,11 @@ function parseSongs(myArray){ // It receives an array of objects
              .then(function(data) {
                let result = data.body.items;
                result.forEach((element) => {
-               let myObject = {};
-               myObject.image = element.images[0].url;
-               myObject.name = element.name;
-               //myObject.nameArtist = element.artist.name;
-               // myObject.artist = element.artists[0];
-                myAlbum.push(myObject);
+                 let myObject = {};
+                 myObject.image = element.images[0].url;
+                 myObject.name = element.name;
+                 myObject.id = element.id;
+                 myAlbum.push(myObject);
                });
                allAlbums.push(myAlbum);
                k++;
@@ -241,17 +198,49 @@ function parseSongs(myArray){ // It receives an array of objects
        }
 
     });
+
     function doneLoopingArtists(myArray){
+      console.log(myArray);
       res.render("followed", {username: req.user.username, myArray });
     }
-  });
+
+   });
+
+   router.get("/followed/individual",(req,res,next) => {
+     //let albumId = req.body.albumId;
+     let albumId = "0K4pIOOsfJ9lK8OjrZfXzd";
+     let tracksArray = [];
+     spotifyApi.getAlbumTracks(albumId, { limit : 10, offset : 1 })
+       .then(function(data) {
+         let result = data.body.items;
+         result.forEach((el) => {
+           if(el.preview_url){
+             let myObject = {};
+             myObject.name = el.name;
+             myObject.previewUrl = el.preview_url;
+             myObject.id = el.id;
+             tracksArray.push(myObject);
+           }
+         });
+         res.send(tracksArray);
+         //res.render("songsAlbum", { tracksArray });
+       }, function(err) {
+         console.log('Something went wrong!', err);
+     });
+   });
+
 
   router.post("/artist/new",(req,res,next) => {
     let id_artist = req.body.info.artistId;
     let username = req.user.username;
 
     let myArtists = req.user.artists;
-    myArtists.push(id_artist);
+    if(myArtists.indexOf(id_artist) !== -1){
+      myArtists.splice(myArtists.indexOf(id_artist),1);
+    }
+    else{
+      myArtists.push(id_artist);
+    }
 
     // Instead of updating the username, update the favourites
     User.findOneAndUpdate({username},{$set: {artists: myArtists}}, (err,user) => {
