@@ -43,7 +43,7 @@ function parseSongs(myArray){ // It receives an array of objects
       }
     }
     if(push){
-      returnArray.push(myArray[i]);
+      returnArray.unshift(myArray[i]);
     }
   }
   return returnArray;
@@ -85,7 +85,7 @@ function checkDuplicateLists(database,add){
               let objectArtist = {};
               objectArtist.name = artist.name;
               objectArtist.id = artist.id;
-              arrayArtists.push(objectArtist);
+              arrayArtists.unshift(objectArtist);
             });
             myObjectSong.artists = arrayArtists;
 
@@ -94,7 +94,7 @@ function checkDuplicateLists(database,add){
             myObjectSong.image = myImage;
 
             // Push the object to the array<
-            allSongs.push(myObjectSong);
+            allSongs.unshift(myObjectSong);
           }
         });
         allSongs = parseSongs(allSongs);
@@ -122,7 +122,7 @@ function checkDuplicateLists(database,add){
     };
     let myFav = req.user.favourites;
     if(!checkDuplicateLists(myFav,songObject)){
-      myFav.push(songObject);
+      myFav.unshift(songObject);
     }
 
 
@@ -154,7 +154,7 @@ function checkDuplicateLists(database,add){
       artist_locationLabel: req.body.info.artistLocationLabel
     };
     if(!checkDuplicateLists(req.session.myQueue,songObject)){
-      req.session.myQueue.push(songObject);
+      req.session.myQueue.unshift(songObject);
     }
     req.session.save();
     res.end('{"success" : "Updated Successfully", "status" : 200}');
@@ -163,7 +163,7 @@ function checkDuplicateLists(database,add){
    function parseArtists(myArray){
      let returnArray = [];
      for(var i = 0;i<myArray.length;i++){
-       returnArray.push(parseSongs(myArray[i]));
+       returnArray.unshift(parseSongs(myArray[i]));
      }
      return returnArray;
    }
@@ -186,9 +186,9 @@ function checkDuplicateLists(database,add){
                  myObject.image = element.images[0].url;
                  myObject.name = element.name;
                  myObject.id = element.id;
-                 myAlbum.push(myObject);
+                 myAlbum.unshift(myObject);
                });
-               allAlbums.push(myAlbum);
+               allAlbums.unshift(myAlbum);
                k++;
                if(k === followingArtists.length){
                  allAlbums = parseArtists(allAlbums);
@@ -210,7 +210,7 @@ function checkDuplicateLists(database,add){
    });
 
    router.get("/followed/individual",(req,res,next) => {
-     let albumId = req.body.albumId;
+     let albumId = req.query.albumId;
      let tracksArray = [];
      spotifyApi.getAlbumTracks(albumId, { limit : 10, offset : 1 })
        .then(function(data) {
@@ -221,11 +221,10 @@ function checkDuplicateLists(database,add){
              myObject.name = el.name;
              myObject.previewUrl = el.preview_url;
              myObject.id = el.id;
-             tracksArray.push(myObject);
+             tracksArray.unshift(myObject);
            }
          });
-         res.send(tracksArray);
-         //res.render("songsAlbum", { tracksArray });
+         res.render("songsalbum", { tracksArray });
        }, function(err) {
          console.log('Something went wrong!', err);
      });
@@ -241,7 +240,7 @@ function checkDuplicateLists(database,add){
       myArtists.splice(myArtists.indexOf(id_artist),1);
     }
     else{
-      myArtists.push(id_artist);
+      myArtists.unshift(id_artist);
     }
 
     // Instead of updating the username, update the favourites
