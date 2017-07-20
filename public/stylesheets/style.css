@@ -215,9 +215,12 @@ body {
 
 .search-results-play {
     position: absolute;
-    margin-top: 55px;
-    left: 170px;
-    width: 40px;
+    height: 40px;
+    width: 50px;
+    border: none;
+    margin-top: 50px;
+    left: 166px;
+
 }
 
 .player {
