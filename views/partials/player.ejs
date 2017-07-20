@@ -46,7 +46,7 @@ twttr.widgets.createShareButton(
   document.getElementById('shareable_<%= artistInfo.id %>'),
   {
     count: 'none',
-    text: 'Check out what I found on Sound Tracker <%= song.previewUrl %>' 
+    text: 'Check out what I found on Sound Tracker <%= song.previewUrl %>'
   }).then(function (el) {
     console.log("Button created.")
   });
@@ -75,10 +75,11 @@ function saveToFavorite(song, artistInfo, artistBio) {
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
         success: function(data) {
-            toastr.success('Song added to favourites.');  
+          result = JSON.parse(data);
+            toastr.success('Song '+result.action+ ' favourites.');
         },
         error:   function(data) {
-           
+
         }
   });
 
@@ -107,10 +108,10 @@ function saveToQueue(song, artistInfo, artistBio) {
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
         success: function(data) {
-            toastr.success('Song added to queue.');
-        },
+          result = JSON.parse(data);
+            toastr.success('Song '+result.action+ ' queue.');        },
         error:   function(data) {
-            
+
         }
   });
     return false;
@@ -126,9 +127,9 @@ function saveToFollowingArtists(artistId) {
         'Content-Type': 'application/x-www-form-urlencoded',
         data: { info: info },
         success: function(data) {
-            toastr.success('Now following artist.');
-        },
-        error:   function(data) {      
+          result = JSON.parse(data);
+            toastr.success('Now '+result.action+ ' artist.');        },
+        error:   function(data) {
         }
   });
     return false;

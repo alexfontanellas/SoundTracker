@@ -104,6 +104,7 @@ function checkDuplicateLists(database,add){
   //do post
   router.post("/favourites/new",(req,res,next) =>{
     let username = req.user.username;
+    let action = "added to";
     console.log('songimage', req.body.info.songImage);
     const songObject = {
       name: req.body.info.songName,
@@ -121,6 +122,9 @@ function checkDuplicateLists(database,add){
     if(!checkDuplicateLists(myFav,songObject)){
       myFav.unshift(songObject);
     }
+    else{
+      action = "deleted from";
+    }
 
 
     // Instead of updating the username, update the favourites
@@ -129,7 +133,12 @@ function checkDuplicateLists(database,add){
         return next(err);
       }
       else {
-         res.end('{"success" : "Updated Successfully", "status" : 200}');
+        if(action === "added to"){
+          res.end('{"success" : "Updated Successfully", "status" : 200, "action": "added to"}');
+        }
+        else{
+          res.end('{"success" : "Updated Successfully", "status" : 200, "action": "deleted from"}');
+        }
       }
     });
 
@@ -138,6 +147,7 @@ function checkDuplicateLists(database,add){
   });
 
   router.post("/queue/new",(req,res,next) =>{
+    var action = true;
     const songObject = {
       name: req.body.info.songName,
       image: req.body.info.songImage,
@@ -153,9 +163,18 @@ function checkDuplicateLists(database,add){
     if(!checkDuplicateLists(req.session.myQueue,songObject)){
       req.session.myQueue.unshift(songObject);
     }
+    else{
+      action = false;
+    }
     req.session.save();
-    res.end('{"success" : "Updated Successfully", "status" : 200}');
-   });
+    if(action){
+      res.end('{"success" : "Updated Successfully", "status" : 200, "action": "added to"}');
+    }
+    else{
+      console.log("it's correct");
+      res.end('{"success" : "Updated Successfully", "status" : 200, "action": "deleted from"}');
+    }
+  });
 
    function parseArtists(myArray){
      let returnArray = [];
@@ -179,13 +198,17 @@ function checkDuplicateLists(database,add){
              .then(function(data) {
                let result = data.body.items;
                result.forEach((element) => {
-                 let myObject = {};
-                 myObject.image = element.images[0].url;
-                 myObject.name = element.name;
-                 myObject.id = element.id;
-                 myAlbum.unshift(myObject);
+                 console.log("THIS IS MY ELEMENT");
+                 console.log(element);
+                   let myObject = {};
+                   myObject.image = element.images[0].url;
+                   myObject.name = element.name;
+                   myObject.id = element.id;
+                   myAlbum.unshift(myObject);
+
                });
-               allAlbums.unshift(myAlbum);
+              allAlbums.unshift(myAlbum);
+
                k++;
                if(k === followingArtists.length){
                  allAlbums = parseArtists(allAlbums);
@@ -231,10 +254,12 @@ function checkDuplicateLists(database,add){
   router.post("/artist/new",(req,res,next) => {
     let id_artist = req.body.info.artistId;
     let username = req.user.username;
+    let action = "following";
 
     let myArtists = req.user.artists;
     if(myArtists.indexOf(id_artist) !== -1){
       myArtists.splice(myArtists.indexOf(id_artist),1);
+      action = "unfollowing";
     }
     else{
       myArtists.unshift(id_artist);
@@ -245,8 +270,12 @@ function checkDuplicateLists(database,add){
       if(err){
         return next(err);
       } else {
-        res.end('{"success" : "Updated Successfully", "status" : 200}');
-      }
+        if(action === "following"){
+          res.end('{"success" : "Updated Successfully", "status" : 200, "action": "following"}');
+        }
+        else{
+          res.end('{"success" : "Updated Successfully", "status" : 200, "action": "unfollowing"}');
+        }      }
         });
   });
 
