@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const ensureLogin = require("connect-ensure-login");
 const request = require('request');
-const openAuraKey = 'ff6b1b41cb78a3020f7e52051d31c189c0e16d62';
 const User = require("../models/user");
 
 
@@ -49,13 +48,13 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
   let artistName = req.body.artist;
   let artistId = req.body.artistId;
   let artistInfo = {};
-  request('http://api.openaura.com/v1/search/artists_all?q='+ artistName + '&api_key=' + openAuraKey, ((error, response, body) => {
+  request('http://api.openaura.com/v1/search/artists_all?q='+ artistName + '&api_key=' + process.env.OPENAURA_KEY, ((error, response, body) => {
     if (!error && response.statusCode == 200) {
         let result =  JSON.parse(response.body);
 
         let firstFoundArtist = result[0];
         let openauraArtistId = firstFoundArtist.oa_artist_id;
-        request('http://api.openaura.com/v1/info/artists/' + openauraArtistId + '?id_type=oa%3Aartist_id&api_key=' + openAuraKey, ((error, response, body) => {
+        request('http://api.openaura.com/v1/info/artists/' + openauraArtistId + '?id_type=oa%3Aartist_id&api_key=' + process.env.OPENAURA_KEY, ((error, response, body) => {
            if (!error && response.statusCode == 200) {
              let result =  JSON.parse(response.body);
 

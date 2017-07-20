@@ -3,23 +3,20 @@ const express = require('express');
 const router = express.Router();
 const User = require("../models/user");
 const Song = require("../models/song");
-
+const dotenv = require("dotenv").config();
 
 const SpotifyWebApi = require('spotify-web-api-node');
 
-// SPOTIFY CREDENTIALS TO USE THE API
-var clientId = '7c824c4a01474c8fbb1a67de125fffbc',
-    clientSecret = '0f6b53915268423ab1116853dd0f644c';
 // Create the api object with the credentials
 const spotifyApi = new SpotifyWebApi({
-  clientId : clientId,
-  clientSecret : clientSecret
+  clientId : process.env.SPOTIFY_API_CLIENTID,
+  clientSecret : process.env.SPOTIFY_API_CLIENTSECRET
 });
 
 // Retrieve an access token.
 spotifyApi.clientCredentialsGrant()
   .then(function(data) {
-    console.log('The access token expires in ' + data.body['expires_in']);
+   console.log('The access token expires in ' + data.body['expires_in']);
     console.log('The access token is ' + data.body['access_token']);
 
     // Save the access token so that it's used in future calls
