@@ -88,7 +88,7 @@ router.post("/playsingle", ensureLogin.ensureLoggedIn(), (req,res,next) => {
 
               let myHistory = req.user.history;
               if(checkDuplicateLists(myHistory,songObject)){
-                myHistory.push(songObject);
+                myHistory.unshift(songObject);
                 User.findOneAndUpdate({username},{$set: {history: myHistory}}, (err,user) => {
                   if(err){
                     return next(err);
