@@ -15,6 +15,7 @@
             <div><a href="#" onclick="return saveToQueue('<%= JSON.stringify(song) %>','<%= JSON.stringify(artistInfo) %>','<%= artistBio %>')" ><img class="player-options-icon" src="/images/plus-sign-to-add.png"/> Add to queue </a></div>
             <div><a href="#" onclick="return saveToFollowingArtists('<%= artistInfo.id %>')">Follow this artist </a></div>
             <div><a class="openmodal" href="#<%= artistInfo.id %>" data-toggle="modal" ><img class="player-options-icon" src="/images/informationicon.png"/>Artist info</a></div>
+            <button class="play-twitter" id="shareable_<%= artistInfo.id %>"></button>
         </div>
     </div>
 </div>
@@ -32,12 +33,25 @@
                     <div id="map_<%= artistInfo.id %>" class="artist-map"></div>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a id="shareable_<%= artistInfo.id %>" class="btn btn-default" data-dismiss="modal">Close</a>
                 </div>
             </div>
       </div>
 </div>
 <script>
+
+setTimeout(function(){
+twttr.widgets.createShareButton(
+  '/',
+  document.getElementById('shareable_<%= artistInfo.id %>'),
+  {
+    count: 'none',
+    text: 'Check out what I found on Sound Tracker <%= song.previewUrl %>' 
+  }).then(function (el) {
+    console.log("Button created.")
+  });
+}, 500);
+
 
 function saveToFavorite(song, artistInfo, artistBio) {
     song = JSON.parse(song);

@@ -240,6 +240,7 @@ body {
 .player-options {
     margin-top: 34px;
     display: inline-flex;
+    width: 600px;
 }
 
 .player-options a {
@@ -250,6 +251,11 @@ body {
 .player-options-icon {
     width: 16px;
     margin-right: 4px;
+}
+
+.play-twitter {
+    background-color: transparent;
+    border: none;
 }
 
 .followed {

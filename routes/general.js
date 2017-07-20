@@ -156,19 +156,5 @@ router.get("/playlists",  ensureLogin.ensureLoggedIn(),(req,res,next) => {
   res.render("playlists");
 });
 
-router.get("/logout",ensureLogin.ensureLoggedIn(), (req, res, next) => {
-  let username = req.user.username;
-  req.session.destroy((err) => {
-    User.findOneAndUpdate({username},{$set: {queue: []}}, (err,user) => {
-      if(err){
-        return next(err);
-      }
-      else{
-        console.log("updated");
-      }
-    });
-    res.redirect("/login");
-  });
-});
 
 module.exports = router;
