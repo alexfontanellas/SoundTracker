@@ -1,5 +1,4 @@
 <div class="page container">
-  <h2>Followed</h2>
   <div class="followed">
   <% if (myArray.length > 0) { %>
   <% myArray.forEach((element) => { %>
@@ -13,6 +12,18 @@
   </div>
 <% }) %>
 <% } else {%>
-  <div class="empty-page">You are not following any artist, yet...</div>
+  <div class="empty-page history"><div class="empty-page-text">You are not following any artist, yet...</div></div>
   <% } %>
 </div>
+<script>
+  setTimeout(function() {
+  if ($('.empty-page').length > 0) {
+    $('body').css('margin-bottom','0px');
+    $('.container').css('padding-left', '0px');
+    $('.container').css('padding-right', '0px');
+    $('#pagecontainer').removeClass('page');
+    $('#pagecontainer').addClass('emptypage');
+    $('footer').css('bottom', '20px');
+}
+}, 100); 
+</script>

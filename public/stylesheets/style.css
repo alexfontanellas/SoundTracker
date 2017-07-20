@@ -1,4 +1,4 @@
-body {
+.body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
@@ -9,7 +9,7 @@ body {
 }
 
 .page {
-  padding-top: 35px !important;
+  padding-top: 100px !important;
 }
 
 .search-box {
@@ -29,6 +29,7 @@ body {
 
 .custom-search-input {
   display: inline-flex;
+  padding-left: 130px;
 }
 
 
@@ -307,9 +308,46 @@ body {
 
 .empty-page {
     padding-top: 150px;
-    width: 900px;
+    width: 100%;
+    margin: auto;
+    height: 604px;
+}
+
+.history {
+    background-image: url(/images/history.png);
+    background-size: 100%;
+}
+
+.favourites {
+    background-image: url(/images/favourites.png);
+    background-size: 100%;
+}
+
+.queue {
+    background-image: url(/images/queue.png);
+    background-size: 100%;
+}
+
+
+.navbar-brand {
+    padding: 0px 15px;
+    position: absolute;
+    top: 13px;
+    padding-left: 26px;
+}
+
+.logo {
+    width: 80px;
+}
+
+.emptypage {
+    padding-top: 100px !important;
+}
+
+.empty-page-text {
     font-size: 24px;
     text-align: center;
+    color: #4d4d4d;
+    width: 700px;
     margin: auto;
-    color: #686868;
 }
