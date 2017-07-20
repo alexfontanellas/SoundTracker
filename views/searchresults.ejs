@@ -9,12 +9,13 @@
             <input type="hidden" name="songId" value="<%= song.id %>">
             <input type="hidden" name="songImage" value="<%= song.image %>">
             <div class="search-results">
-                <div><input type="image" name="submit" class="search-results-image" src="<%= song.image %>"></div>
-                <div class="search-results-details">
-                <div class="search-results-artist"><%= song.artists[0].name %></div>
-                <div class="search-results-song"><%= song.name %></div>
+                <div>
+                    <img class="search-results-play" src="/images/play-button.png"/>
+                    <input type="image" name="submit" class="search-results-image" src="<%= song.image %>"></div>
+                    <div class="search-results-details">
+                    <div class="search-results-artist"><%= song.artists[0].name %></div>
+                    <div class="search-results-song"><%= song.name %></div>
                 </div>
-              
             </div>
         </form>
    <% }) %>
