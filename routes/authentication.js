@@ -51,7 +51,9 @@ authRoutes.post("/signup", (req, res, next) => {
       if (err) {
         res.render("authentication/signup", { message: "Something went wrong"});
       } else {
-        res.redirect("/login");
+         passport.authenticate('local')(req, res, function () {
+         res.redirect('/');
+        });
       }
     });
   });
@@ -70,6 +72,20 @@ authRoutes.post("/login", passport.authenticate("local", {
 }));
 
 
+authRoutes.get("/logout", (req, res, next) => {
+  let username = req.user.username;
+  req.session.destroy((err) => {
+    User.findOneAndUpdate({username},{$set: {queue: []}}, (err,user) => {
+      if(err){
+        return next(err);
+      }
+      else{
+        console.log("updated");
+      }
+    });
+    res.redirect("/login");
+  });
+});
 
 
 
