@@ -97,7 +97,9 @@ body {
 .menu div {
     display: inline-block;
     margin-left: 16px;
+    height: 28px;
 }
+
 
 .menu a {
     float: right;
@@ -108,6 +110,7 @@ body {
 .menu a:hover {
     float: right;
     color: #fff;
+    text-decoration: none;
 }
 
 
@@ -119,6 +122,10 @@ body {
 
 .menu-options span{
     margin-left: 10px;
+}
+
+.menu-active {
+    border-bottom: solid 2px;
 }
 
 
@@ -286,4 +293,13 @@ body {
 .logout-icon {
     height: 30px;
     margin-left: 10px;
+}
+
+.empty-page {
+    padding-top: 150px;
+    width: 900px;
+    font-size: 24px;
+    text-align: center;
+    margin: auto;
+    color: #686868;
 }

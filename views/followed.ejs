@@ -1,6 +1,7 @@
 <div class="page container">
   <h2>Followed</h2>
   <div class="followed">
+  <% if (myArray.length > 0) { %>
   <% myArray.forEach((element) => { %>
     <% element.forEach((el) => { %>
     <div class="followed-albums">
@@ -11,4 +12,7 @@
 <% }) %>
   </div>
 <% }) %>
+<% } else {%>
+  <div class="empty-page">You are not following any artist, yet...</div>
+  <% } %>
 </div>

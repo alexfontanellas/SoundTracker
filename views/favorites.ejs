@@ -1,11 +1,15 @@
 <div class="page container">
   <h2>Favorites</h2>
+  <% if (favourites.length > 0) { %>
   <% favourites.forEach((favourite) => { %>
   <%  let song = { name: favourite.name, previewUrl: favourite.preview_url, image: favourite.image } %>
   <%  let artistInfo = { id: favourite.artist_id, name: favourite.artist_name, location: favourite.artist_location, locationLabel: favourite.artist_locationLabel} %>
   <%  let artistBio = favourite.artist_bio %>
   <% include partials/player.ejs %>
   <% }) %>
+  <% } else {%>
+  <div class="empty-page">Who would you like to listen next? Add next songs to play and find them here.</div>
+  <% } %>
 </div>
  <script
     async
