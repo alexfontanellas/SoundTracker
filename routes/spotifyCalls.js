@@ -40,7 +40,7 @@ function parseSongs(myArray){ // It receives an array of objects
       }
     }
     if(push){
-      returnArray.unshift(myArray[i]);
+      returnArray.push(myArray[i]);
     }
   }
   return returnArray;
@@ -82,7 +82,7 @@ function checkDuplicateLists(database,add){
               let objectArtist = {};
               objectArtist.name = artist.name;
               objectArtist.id = artist.id;
-              arrayArtists.unshift(objectArtist);
+              arrayArtists.push(objectArtist);
             });
             myObjectSong.artists = arrayArtists;
 
@@ -91,7 +91,7 @@ function checkDuplicateLists(database,add){
             myObjectSong.image = myImage;
 
             // Push the object to the array<
-            allSongs.unshift(myObjectSong);
+            allSongs.push(myObjectSong);
           }
         });
         allSongs = parseSongs(allSongs);
@@ -198,8 +198,6 @@ function checkDuplicateLists(database,add){
              .then(function(data) {
                let result = data.body.items;
                result.forEach((element) => {
-                 console.log("THIS IS MY ELEMENT");
-                 console.log(element);
                    let myObject = {};
                    myObject.image = element.images[0].url;
                    myObject.name = element.name;
@@ -214,6 +212,7 @@ function checkDuplicateLists(database,add){
                  allAlbums = parseArtists(allAlbums);
                  doneLoopingArtists(allAlbums);
                }
+
              }, function(err) {
                console.error(err);
             });
@@ -223,7 +222,6 @@ function checkDuplicateLists(database,add){
     });
 
     function doneLoopingArtists(myArray){
-      console.log(myArray);
       res.render("followed", {username: req.user.username, myArray });
     }
 
